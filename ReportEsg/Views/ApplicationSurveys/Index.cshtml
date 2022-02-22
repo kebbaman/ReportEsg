@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ReportEsg.Models.ApplicationSurvey>
+
+@{
+    ViewData["Title"] = "Questionari";
+}
+
+<h1>Questionari</h1>
+
+<p>
+    <a asp-controller="Pillars" asp-action="Index" asp-route-applicationId="@ViewBag.AppId">Pilastri</a> |
+    <a asp-controller="Areas" asp-action="Index"  asp-route-applicationId="@ViewBag.AppId">Aree</a> |
+    <a asp-controller="Themes" asp-action="Index"  asp-route-applicationId="@ViewBag.AppId">Temi</a> |
+    <a asp-action="Create" asp-route-applicationId="@ViewBag.AppId">Crea un nuovo questionario</a> |
+    <a asp-controller="Applications" asp-action="Index">Torna alla lista delle applicazioni</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Application)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Theme)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Theme.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                <a asp-controller="ApplicationSurveyQuestions" asp-action="Index" asp-route-surveyId="@item.Id" >Gestisci domande</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id" asp-route-applicationId="@ViewBag.AppId">Modifica</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" asp-route-applicationId="@ViewBag.AppId">Elimina</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

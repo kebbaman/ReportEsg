@@ -9,22 +9,7 @@ namespace ReportEsg.Data
 {
     public class DatabaseContext : DbContext
     {
-        //Utilizzate dependency injection e appsetting json per evitare l'hardcoding della connection string
-        /*
-
-        public DbSet<SurveyType> SurveyTypes { get; set; }
-        public DbSet<SurveyModel> SurveyModels { get; set; }
-        public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
-        
-        public DbSet<PreAssessmentSurvey> PreAssessmentSurveys { get; set; }
-        public DbSet<CompanyDetailsSurvey> CompanyDetailsSurveys { get; set; }
-
-        public DbSet<SurveyModel_CompanyCategory> SurveyModel_CompanyCategories { get; set; }
-        public DbSet<PreAssessmentSurvey_CompanyCategory> PreAssessmentSurvey_CompanyCategories { get; set; }
-        public DbSet<CompanyDetailsSurvey_CompanyCategory> CompanyDetailsSurvey_CompanyCategories { get; set; }
-        public DbSet<PiattaformaReportingEsgPmi.Models.GenericSurvey> GenericSurvey { get; set; }
-        */
-
+        //Utilizzati dependency injection e appsetting json per evitare l'hardcoding della connection string
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<OrganizationCategory> OrganizationCategories { get; set; }
@@ -39,13 +24,22 @@ namespace ReportEsg.Data
         public DbSet<Pillar> Pillars { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<Theme> Themes { get; set; }
+
+
+        public DbSet<ApplicationSurvey> ApplicationSurveys { get; set; }
+        public DbSet<ApplicationSurveyQuestion> ApplicationSurveyQuestions { get; set; }
+        public DbSet<TextApplicationSurveyQuestion> TextApplicationSurveyQuestions { get; set; }
+        public DbSet<BooleanApplicationSurveyQuestion> BooleanApplicationSurveyQuestions { get; set; }
+
+
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-        
-
-        
 
 
+
+
+        public DbSet<ReportEsg.Models.TextApplicationSurveyQuestion> TextApplicationSurveyQuestion { get; set; }
 
     }
 

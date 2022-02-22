@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ReportEsg.Models.Pillar>
+
+@{
+    ViewData["Title"] = "Pilastri";
+}
+
+<h1>Pilastri</h1>
+
+<p>
+    <a asp-action="Create" asp-route-applicationId="@ViewBag.AppId">Crea un nuovo pilastro</a> |
+    <a asp-controller="ApplicationSurveys" asp-action="Index" asp-route-applicationId="@ViewBag.AppId">Torna alla schermata di gestione dell'applicazione</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.Title)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" asp-route-applicationId ="@ViewBag.AppId">Modifica</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" asp-route-applicationId ="@ViewBag.AppId">Elimina</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

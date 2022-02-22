@@ -1,0 +1,52 @@
+﻿@model ReportEsg.Models.BooleanApplicationSurveyQuestion
+
+@{
+    ViewData["Title"] = "Crea una nuova domanda booleana";
+}
+
+<h1>Crea una nuova domanda booleana</h1>
+
+<h4>Domanda booleana</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BooleanTextQuestion" asp-route-surveyId="@ViewBag.surveyId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ApplicationSurveyId" class="control-label"></label>
+                <input asp-for="ApplicationSurveyId" class="form-control" value="@ViewBag.surveyId" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" value="@ViewBag.Name" readonly />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" value="text" readonly />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsRequired" /> @Html.DisplayNameFor(model => model.IsRequired)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crea" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-surveyId="@ViewBag.surveyId">Torna alla lista delle domande</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

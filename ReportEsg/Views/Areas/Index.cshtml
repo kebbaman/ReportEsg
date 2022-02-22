@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ReportEsg.Models.Area>
+
+@{
+    ViewData["Title"] = "Aree";
+}
+
+<h1>Aree</h1>
+
+<p>
+    <a asp-action="Create" asp-route-applicationId="@ViewBag.ApplicationId">Crea una nuova area</a> |
+    <a asp-controller="ApplicationSurveys" asp-action="Index" asp-route-applicationId="@ViewBag.ApplicationId">Torna alla schermata di gestione dell'applicazione</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pillar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pillar.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.Title)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" asp-route-applicationId ="@ViewBag.ApplicationId">Modifica</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" asp-route-applicationId ="@ViewBag.ApplicationId">Elimina</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

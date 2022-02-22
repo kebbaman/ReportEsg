@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace ReportEsg.Models
         [Key]
         public int Id { get; set; }
 
-        //[JsonProperty(PropertyName = "title")]
-        //[Required(ErrorMessage = "È obbligatorio inserire un titolo!")]
+        [JsonProperty(PropertyName = "title")]
+        [Required(ErrorMessage = "È obbligatorio inserire un titolo!")]
         [StringLength(255, ErrorMessage = "Il titolo può essere lungo massimo 255 caratteri.")]
         [Display(Name = "Titolo Questionario")]
         public string Title { get; set; }
@@ -20,8 +21,7 @@ namespace ReportEsg.Models
         //[JsonProperty(PropertyName = "questions")]
         //public List<SurveyQuestion> Questions { get; set; }
 
-        public int ApplicationId { get; set; }
-        public Application Application { get; set; }
+        
 
     }
 }

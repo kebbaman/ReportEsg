@@ -1,0 +1,39 @@
+﻿@model ReportEsg.Models.Theme
+
+@{
+    ViewData["Title"] = "Elimina tema";
+}
+
+<h1>Elimina tema</h1>
+
+<h3>È sicuro di voler eliminare il seguente tema materiale?</h3>
+<div>
+    <h4>Tema</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Area)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Area.Id)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Application)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Application.Id)
+        </dd class>
+    </dl>
+    
+    <form asp-action="Delete" asp-route-applicationId ="@ViewBag.ApplicationId">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Elimina" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-applicationId ="@ViewBag.ApplicationId">Torna alla lista dei temi</a>
+    </form>
+</div>

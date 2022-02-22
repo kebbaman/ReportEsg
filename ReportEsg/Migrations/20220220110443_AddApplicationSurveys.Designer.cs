@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ReportEsg.Data;
@@ -9,9 +10,10 @@ using ReportEsg.Data;
 namespace ReportEsg.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220220110443_AddApplicationSurveys")]
+    partial class AddApplicationSurveys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,44 +64,6 @@ namespace ReportEsg.Migrations
                     b.HasIndex("ThemeId");
 
                     b.ToTable("ApplicationSurveys");
-                });
-
-            modelBuilder.Entity("ReportEsg.Models.ApplicationSurveyQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ApplicationSurveyId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsRequired")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationSurveyId");
-
-                    b.ToTable("ApplicationSurveyQuestions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationSurveyQuestion");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.Area", b =>
@@ -239,20 +203,6 @@ namespace ReportEsg.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.BooleanApplicationSurveyQuestion", b =>
-                {
-                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
-
-                    b.HasDiscriminator().HasValue("BooleanApplicationSurveyQuestion");
-                });
-
-            modelBuilder.Entity("ReportEsg.Models.TextApplicationSurveyQuestion", b =>
-                {
-                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
-
-                    b.HasDiscriminator().HasValue("TextApplicationSurveyQuestion");
-                });
-
             modelBuilder.Entity("ReportEsg.Models.AdminUser", b =>
                 {
                     b.HasBaseType("ReportEsg.Models.User");
@@ -323,15 +273,6 @@ namespace ReportEsg.Migrations
                     b.HasOne("ReportEsg.Models.Theme", "Theme")
                         .WithMany()
                         .HasForeignKey("ThemeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ReportEsg.Models.ApplicationSurveyQuestion", b =>
-                {
-                    b.HasOne("ReportEsg.Models.ApplicationSurvey", "ApplicationSurvey")
-                        .WithMany()
-                        .HasForeignKey("ApplicationSurveyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

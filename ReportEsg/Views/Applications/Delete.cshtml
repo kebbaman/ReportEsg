@@ -25,9 +25,9 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="Delete" asp-route-applicationId ="@ViewBag.AppId">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Elimina" class="btn btn-danger" /> |
-        <a asp-action="Index">Torna alla lista delle applicazioni</a>
+        <a asp-action="Index" asp-route-applicationId ="@ViewBag.AppId">Torna alla schermata di gestione dell'applicazione'</a>
     </form>
 </div>

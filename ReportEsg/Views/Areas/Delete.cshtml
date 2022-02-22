@@ -1,0 +1,39 @@
+﻿@model ReportEsg.Models.Area
+
+@{
+    ViewData["Title"] = "Elimina area";
+}
+
+<h1>Elimina area</h1>
+
+<h3>È sicuro di voler eliminare la seguente area?</h3>
+<div>
+    <h4>Area</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Pillar)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Pillar.Id)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Application)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Application.Id)
+        </dd class>
+    </dl>
+    
+    <form asp-action="Delete" asp-route-applicationId ="@ViewBag.ApplicationId">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Elimina" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-applicationId ="@ViewBag.ApplicationId">Torna alla lista delle aree</a>
+    </form>
+</div>
