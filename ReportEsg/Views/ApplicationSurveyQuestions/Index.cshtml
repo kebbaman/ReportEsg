@@ -7,7 +7,9 @@
 <h1>Domande</h1>
 
 <p>
-    <a asp-action="CreateTextQuestion" asp-route-surveyId="@ViewBag.surveyId">Crea una nuova domanda aperta</a>
+    <a asp-action="CreateTextQuestion" asp-route-surveyId="@ViewBag.SurveyId">Crea una nuova domanda aperta</a> |
+    <a asp-action="CreateBooleanQuestion" asp-route-surveyId="@ViewBag.SurveyId">Crea una nuova domanda booleana</a> |
+    <a asp-controller="ApplicationSurveys" asp-action="Index" asp-route-applicationId="@ViewBag.ApplicationId">Torna alla schermata di gestione dell'applicazione</a>
 </p>
 <table class="table">
     <thead>

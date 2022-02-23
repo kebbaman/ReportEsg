@@ -26,6 +26,8 @@ namespace ReportEsg.Controllers
             {
                 return NotFound();
             }
+            var applicationSurvey = await _context.ApplicationSurveys.FindAsync(surveyId);
+            ViewBag.ApplicationId = applicationSurvey.ApplicationId;
             ViewBag.SurveyId = surveyId;
             return View(await _context.ApplicationSurveyQuestions.Where(q => q.ApplicationSurveyId == surveyId).ToListAsync());
         }
