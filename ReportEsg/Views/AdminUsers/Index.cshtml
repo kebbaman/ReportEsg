@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ReportEsg.Models.AdminUser>
+
+@{
+    ViewData["Title"] = "Amministratori";
+}
+
+<h1>Amministratori</h1>
+
+<p>
+    <a asp-action="Create">Crea un nuovo account amministratore</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.Description)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Username">Modifica</a> |
+                    <a asp-action="Details" asp-route-id="@item.Username">Visualizza</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Username">Elimina</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

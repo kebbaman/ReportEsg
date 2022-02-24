@@ -1,0 +1,45 @@
+﻿@model ReportEsg.Models.ConsultantUser
+
+@{
+    ViewData["Title"] = "Elimina consulente";
+}
+
+<h1>Elimina consulente</h1>
+
+<h3>È sicuro di voler eliminare il seguente consulente?</h3>
+<div>
+    <h4>ConsultantUser</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Role.Description)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Username" />
+        <input type="submit" value="Elimina" class="btn btn-danger" /> |
+        <a asp-action="Index">Torna alla lista dei consulenti</a>
+    </form>
+</div>
