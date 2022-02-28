@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ReportEsg.Models.OrganizationDetailsSurveySession>
+
+@{
+    ViewData["Title"] = "Questionari anagrafici completati dalle organizzazioni";
+}
+
+<h1>Questionari anagrafici completati dalle organizzazioni</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurveyResult)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrganizationDetailsSurvey)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organization)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurveyResult)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationDetailsSurvey.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Organization.Username)
+            </td>
+            <td>
+                <a asp-action="ViewResults" asp-route-id="@item.ID">Visualizza risultato</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

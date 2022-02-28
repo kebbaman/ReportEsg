@@ -37,71 +37,6 @@ namespace ReportEsg.Migrations
                     b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.ApplicationSurvey", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ApplicationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ThemeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("character varying(255)")
-                        .HasMaxLength(255);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.HasIndex("ThemeId");
-
-                    b.ToTable("ApplicationSurveys");
-                });
-
-            modelBuilder.Entity("ReportEsg.Models.ApplicationSurveyQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ApplicationSurveyId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsRequired")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationSurveyId");
-
-                    b.ToTable("ApplicationSurveyQuestions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationSurveyQuestion");
-                });
-
             modelBuilder.Entity("ReportEsg.Models.Area", b =>
                 {
                     b.Property<int>("Id")
@@ -142,6 +77,56 @@ namespace ReportEsg.Migrations
                     b.ToTable("OrganizationCategories");
                 });
 
+            modelBuilder.Entity("ReportEsg.Models.OrganizationCategoryPerApplication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ApplicationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("OrganizationCategoryId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("OrganizationCategoryId");
+
+                    b.ToTable("OrganizationCategoryPerApplication");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.OrganizationDetailsSurveySession", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("OrganizationDetailsSurveyId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SurveyResult")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("OrganizationDetailsSurveyId");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("OrganizationDetailsSurveySessions");
+                });
+
             modelBuilder.Entity("ReportEsg.Models.Pillar", b =>
                 {
                     b.Property<int>("Id")
@@ -176,6 +161,67 @@ namespace ReportEsg.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.Survey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Surveys");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Survey");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.SurveyQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SurveyId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SurveyId");
+
+                    b.ToTable("SurveyQuestions");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("SurveyQuestion");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.Theme", b =>
@@ -239,18 +285,76 @@ namespace ReportEsg.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.BooleanApplicationSurveyQuestion", b =>
+            modelBuilder.Entity("ReportEsg.Models.ApplicationSurvey", b =>
                 {
-                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
+                    b.HasBaseType("ReportEsg.Models.Survey");
 
-                    b.HasDiscriminator().HasValue("BooleanApplicationSurveyQuestion");
+                    b.Property<int>("ApplicationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ThemeId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("ThemeId");
+
+                    b.HasDiscriminator().HasValue("ApplicationSurvey");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.TextApplicationSurveyQuestion", b =>
+            modelBuilder.Entity("ReportEsg.Models.OrganizationDetailsSurvey", b =>
                 {
-                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
+                    b.HasBaseType("ReportEsg.Models.Survey");
 
-                    b.HasDiscriminator().HasValue("TextApplicationSurveyQuestion");
+                    b.Property<int>("OrganizationCategoryId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("OrganizationCategoryId");
+
+                    b.HasDiscriminator().HasValue("OrganizationDetailsSurvey");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.SimpleSurvey", b =>
+                {
+                    b.HasBaseType("ReportEsg.Models.Survey");
+
+                    b.HasDiscriminator().HasValue("SimpleSurvey");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.ApplicationSurveyQuestion", b =>
+                {
+                    b.HasBaseType("ReportEsg.Models.SurveyQuestion");
+
+                    b.Property<int>("ApplicationSurveyId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("ApplicationSurveyId");
+
+                    b.HasDiscriminator().HasValue("ApplicationSurveyQuestion");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.OrganizationDetailsSurveyQuestion", b =>
+                {
+                    b.HasBaseType("ReportEsg.Models.SurveyQuestion");
+
+                    b.Property<int>("OrganizationDetailsSurveyId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("OrganizationDetailsSurveyId");
+
+                    b.HasDiscriminator().HasValue("OrganizationDetailsSurveyQuestion");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.SimpleSurveyQuestion", b =>
+                {
+                    b.HasBaseType("ReportEsg.Models.SurveyQuestion");
+
+                    b.Property<int>("SimpleSurveyId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("SimpleSurveyId");
+
+                    b.HasDiscriminator().HasValue("SimpleSurveyQuestion");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.AdminUser", b =>
@@ -282,9 +386,6 @@ namespace ReportEsg.Migrations
                     b.Property<string>("Cap")
                         .HasColumnType("text");
 
-                    b.Property<int>("CompanyCategoryId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("CompanyName")
                         .HasColumnType("character varying(100)")
                         .HasMaxLength(100);
@@ -295,7 +396,7 @@ namespace ReportEsg.Migrations
                     b.Property<string>("Località")
                         .HasColumnType("text");
 
-                    b.Property<int?>("OrganizationCategoryId")
+                    b.Property<int>("OrganizationCategoryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("PartitaIva")
@@ -312,28 +413,25 @@ namespace ReportEsg.Migrations
                     b.HasDiscriminator().HasValue("Organization");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.ApplicationSurvey", b =>
+            modelBuilder.Entity("ReportEsg.Models.BooleanApplicationSurveyQuestion", b =>
                 {
-                    b.HasOne("ReportEsg.Models.Application", "Application")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
 
-                    b.HasOne("ReportEsg.Models.Theme", "Theme")
-                        .WithMany()
-                        .HasForeignKey("ThemeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasDiscriminator().HasValue("BooleanApplicationSurveyQuestion");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.ApplicationSurveyQuestion", b =>
+            modelBuilder.Entity("ReportEsg.Models.TextApplicationSurveyQuestion", b =>
                 {
-                    b.HasOne("ReportEsg.Models.ApplicationSurvey", "ApplicationSurvey")
-                        .WithMany()
-                        .HasForeignKey("ApplicationSurveyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
+
+                    b.HasDiscriminator().HasValue("TextApplicationSurveyQuestion");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.TextOrganizationDetailsQuestion", b =>
+                {
+                    b.HasBaseType("ReportEsg.Models.OrganizationDetailsSurveyQuestion");
+
+                    b.HasDiscriminator().HasValue("TextOrganizationDetailsQuestion");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.Area", b =>
@@ -351,6 +449,34 @@ namespace ReportEsg.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ReportEsg.Models.OrganizationCategoryPerApplication", b =>
+                {
+                    b.HasOne("ReportEsg.Models.Application", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReportEsg.Models.OrganizationCategory", "OrganizationCategory")
+                        .WithMany()
+                        .HasForeignKey("OrganizationCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.OrganizationDetailsSurveySession", b =>
+                {
+                    b.HasOne("ReportEsg.Models.OrganizationDetailsSurvey", "OrganizationDetailsSurvey")
+                        .WithMany()
+                        .HasForeignKey("OrganizationDetailsSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReportEsg.Models.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("Username");
+                });
+
             modelBuilder.Entity("ReportEsg.Models.Pillar", b =>
                 {
                     b.HasOne("ReportEsg.Models.Application", "Application")
@@ -358,6 +484,13 @@ namespace ReportEsg.Migrations
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.SurveyQuestion", b =>
+                {
+                    b.HasOne("ReportEsg.Models.Survey", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("SurveyId");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.Theme", b =>
@@ -384,11 +517,64 @@ namespace ReportEsg.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ReportEsg.Models.ApplicationSurvey", b =>
+                {
+                    b.HasOne("ReportEsg.Models.Application", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReportEsg.Models.Theme", "Theme")
+                        .WithMany()
+                        .HasForeignKey("ThemeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.OrganizationDetailsSurvey", b =>
+                {
+                    b.HasOne("ReportEsg.Models.OrganizationCategory", "OrganizationCategory")
+                        .WithMany()
+                        .HasForeignKey("OrganizationCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.ApplicationSurveyQuestion", b =>
+                {
+                    b.HasOne("ReportEsg.Models.ApplicationSurvey", "ApplicationSurvey")
+                        .WithMany()
+                        .HasForeignKey("ApplicationSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.OrganizationDetailsSurveyQuestion", b =>
+                {
+                    b.HasOne("ReportEsg.Models.OrganizationDetailsSurvey", "OrganizationDetailsSurvey")
+                        .WithMany("OrganizationDetailsSurveyQuestions")
+                        .HasForeignKey("OrganizationDetailsSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.SimpleSurveyQuestion", b =>
+                {
+                    b.HasOne("ReportEsg.Models.SimpleSurvey", "SimpleSurvey")
+                        .WithMany()
+                        .HasForeignKey("SimpleSurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ReportEsg.Models.Organization", b =>
                 {
                     b.HasOne("ReportEsg.Models.OrganizationCategory", "OrganizationCategory")
                         .WithMany()
-                        .HasForeignKey("OrganizationCategoryId");
+                        .HasForeignKey("OrganizationCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

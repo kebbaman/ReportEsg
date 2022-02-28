@@ -36,9 +36,27 @@
                             </ul>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Organizations" asp-action="Index">Organizzazioni</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="#">Anagrafica descrittiva</a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="OrganizationDetailsSurveys" asp-action="Index">Gestisci applicazione</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="OrganizationDetailsSurveySessions" asp-action="Index">Visualizza risultati</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Applications" asp-action="Index">Applicazioni</a>
                         </li>
                     </ul>
+                </div>
+                <div class="mr-2">
+                    <partial name="_LoginStatusPartial" />
                 </div>
             </div>
         </nav>

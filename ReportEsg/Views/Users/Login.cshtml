@@ -21,6 +21,11 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="RememberMe" class="control-label"></label>
+                <input asp-for="RememberMe" />
+                <span asp-validation-for="RememberMe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
             Non hai ancora un account? <a asp-action="Register" asp-controller="Companies">Registrati</a>

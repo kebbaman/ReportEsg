@@ -1,0 +1,37 @@
+﻿@model ReportEsg.Models.OrganizationCategoryPerApplication
+
+@{
+    ViewData["Title"] = "Crea una nuova associazione";
+}
+
+<h1>Crea una nuova associazione</h1>
+
+<h4>Associazione tra categorie e applicazione</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-route-applicationId="@ViewBag.ApplicationId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ApplicationId" class="control-label"></label>
+                <input asp-for="ApplicationId" class="form-control" value="@ViewBag.ApplicationId" readonly/>
+                <span asp-validation-for="ApplicationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationCategoryId" class="control-label"></label>
+                <select asp-for="OrganizationCategoryId" class ="form-control" asp-items="ViewBag.OrganizationCategoryId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crea" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-applicationId="@ViewBag.ApplicationId">Torna alla lista delle associazioni</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

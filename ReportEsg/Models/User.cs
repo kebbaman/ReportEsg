@@ -42,5 +42,8 @@ namespace ReportEsg.Models
         [StringLength(200, MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Display(Name = "Ricordami")]
+        public bool RememberMe { get; set; }
     }
 }

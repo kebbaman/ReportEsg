@@ -1,0 +1,48 @@
+﻿@model ReportEsg.Models.OrganizationDetailsSurveyQuestion
+
+@{
+    ViewData["Title"] = "Elimina domanda";
+}
+
+<h1>Elimina domanda</h1>
+
+<h3>È sicuro di voler eliminare la seguente domanda?</h3>
+<div>
+    <h4>Domanda di anagrafica descrittiva</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganizationDetailsSurvey)
+        </dt>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsRequired)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsRequired)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete" asp-route-surveyId="@ViewBag.SurveyId">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Elimina" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-surveyId="@ViewBag.SurveyId">Torna alla lista delle domande</a>
+    </form>
+</div>

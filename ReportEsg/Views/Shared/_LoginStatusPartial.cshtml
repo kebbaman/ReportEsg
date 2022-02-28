@@ -1,0 +1,11 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <form asp-action="Logout" asp-controller="Users">
+        Benvenuto @Html.Encode(User.Identity.Name)
+        <input type="submit" value="Esci" class="ml-2 btn btn-link" />
+    </form>
+}
+else
+{
+    @Html.ActionLink("Accedi", "Login", "Users") @Html.Encode(" | ") @Html.ActionLink("Registrati", "Register", "Organizations")
+}

@@ -1,0 +1,33 @@
+﻿@model ReportEsg.Models.OrganizationCategoryPerApplication
+
+@{
+    ViewData["Title"] = "Elimina associazione";
+}
+
+<h1>Elimina associazione</h1>
+
+<h3>È sicuro di voler cancellare la seguente associazione?</h3>
+<div>
+    <h4>OrganizationCategoryPerApplication</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ApplicationId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganizationCategory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrganizationCategory.Id)
+        </dd class>
+    </dl>
+    
+    <form asp-action="Delete" asp-route-applicationId="@ViewBag.ApplicationId">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Elimina" class="btn btn-danger" /> |
+        <a asp-action="Index"  asp-route-applicationId="@ViewBag.ApplicationId">Torna alla lista delle associazioni</a>
+    </form>
+</div>

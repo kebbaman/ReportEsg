@@ -8,9 +8,10 @@
 
 <p>
     <a asp-controller="Pillars" asp-action="Index" asp-route-applicationId="@ViewBag.AppId">Pilastri</a> |
-    <a asp-controller="Areas" asp-action="Index"  asp-route-applicationId="@ViewBag.AppId">Aree</a> |
-    <a asp-controller="Themes" asp-action="Index"  asp-route-applicationId="@ViewBag.AppId">Temi</a> |
+    <a asp-controller="Areas" asp-action="Index" asp-route-applicationId="@ViewBag.AppId">Aree</a> |
+    <a asp-controller="Themes" asp-action="Index" asp-route-applicationId="@ViewBag.AppId">Temi</a> |
     <a asp-action="Create" asp-route-applicationId="@ViewBag.AppId">Crea un nuovo questionario</a> |
+    <a asp-controller="OrganizationCategoryPerApplications" asp-action="Index" asp-route-applicationId="@ViewBag.AppId">Gestisci categorie di organizzazione</a> |
     <a asp-controller="Applications" asp-action="Index">Torna alla lista delle applicazioni</a>
 </p>
 <table class="table">

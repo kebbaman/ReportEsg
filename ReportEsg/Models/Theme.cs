@@ -16,5 +16,7 @@ namespace ReportEsg.Models
         public Area Area { get; set; }
         public int ApplicationId { get; set; }
         public Application Application { get; set; }
+
+        public List<ApplicationSurvey> ApplicationSurveys { get; set; }
     }
 }

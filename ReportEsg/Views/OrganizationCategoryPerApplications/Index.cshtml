@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ReportEsg.Models.OrganizationCategoryPerApplication>
+
+@{
+    ViewData["Title"] = "Categorie a cui è destinata l'applicazione";
+}
+
+<h1>Categorie a cui è destinata l'applicazione</h1>
+
+<p>
+    <a asp-action="Create" asp-route-applicationId="@ViewBag.ApplicationId">Crea una nuova associazione</a> |
+    <a asp-controller="ApplicationSurveys" asp-action="Index" asp-route-applicationId="@ViewBag.ApplicationId">Torna alla schermata di gestione dell'applicazione</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Application)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrganizationCategory)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationCategory.Description)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" asp-route-applicationId="@ViewBag.ApplicationId">Modifica</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" asp-route-applicationId="@ViewBag.ApplicationId">Elimina</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -15,5 +15,11 @@ namespace ReportEsg.Models
         [Display(Name = "Descrizione")]
         public string Description { get; set; }
 
+        public OrganizationCategoryPerApplication OrganizationCategoryPerApplication;
+
+        public List<Theme> Themes { get; set; }
+
+        public List<ApplicationSurvey> ApplicationSurveys { get; set; }
+
     }
 }

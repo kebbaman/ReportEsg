@@ -194,7 +194,7 @@ namespace ReportEsg.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Register([Bind("CompanyName,PhoneNumber,Indirizzo,Cap,Località,Provincia,PartitaIva,CompanyCategoryId,Username,Email")] CompanyViewModel newCompany)
+        public async Task<IActionResult> Register([Bind("CompanyName,PhoneNumber,Indirizzo,Cap,Località,Provincia,PartitaIva,OrganizationCategoryId,Username,Email")] CompanyViewModel newCompany)
         {
             if (ModelState.IsValid)
             {

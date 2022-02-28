@@ -18,7 +18,7 @@ namespace ReportEsg.Controllers
         {
             _context = context;
         }
-        [Authorize(Roles = "Admin,Consulente")]
+        //[Authorize(Roles = "Admin,Consulente")]
         // GET: AdminUsers
         public async Task<IActionResult> Index()
         {

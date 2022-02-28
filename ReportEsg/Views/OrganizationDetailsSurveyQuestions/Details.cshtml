@@ -1,0 +1,45 @@
+﻿@model ReportEsg.Models.OrganizationDetailsSurveyQuestion
+
+@{
+    ViewData["Title"] = "Visualizza domanda";
+}
+
+<h1>Visualizza domanda</h1>
+
+<div>
+    <h4>Domanda di anagrafica descrittiva</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganizationDetailsSurvey)
+        </dt>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsRequired)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsRequired)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-surveyId="@ViewBag.SurveyId">Modifica</a> |
+    <a asp-action="Index" asp-route-surveyId="@ViewBag.SurveyId">Torna alla lista delle domande</a>
+</div>

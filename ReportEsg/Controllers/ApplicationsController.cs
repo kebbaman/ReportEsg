@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -149,5 +151,40 @@ namespace ReportEsg.Controllers
         {
             return _context.Applications.Any(e => e.Id == id);
         }
+
+        [Authorize(Roles = "Azienda")]
+        // GET: Applications
+        public async Task<IActionResult> ShowList()
+        {
+            //Ottengo lo username dell'azienda loggata e ne carico l'entità
+            string username = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
+
+            //Controllo se ha prima compilato il questionario di anagrafica descrittiva
+            if (!await _context.OrganizationDetailsSurveySessions.AnyAsync(s => s.Organization.Username == organization.Username))
+                return View("OrganizationDetailsSurveyMissing");
+
+            var applicationsPerCategory = await _context.OrganizationCategoryPerApplication.Where(o => o.OrganizationCategoryId == organization.OrganizationCategoryId).ToListAsync();
+            var allApplications = await _context.Applications.ToListAsync();
+            List<Application> applications = new List<Application>();
+            foreach(Application app in allApplications)
+            {
+                if (applicationsPerCategory.Any(a => a.ApplicationId == app.Id))
+                    applications.Add(app);
+            }
+
+            ViewBag.n = applications.Count;
+            return View(applications);
+        }
+
+        public async Task<IActionResult> Execute(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return View(await _context.Applications.FindAsync(id));
+        }
+
     }
 }

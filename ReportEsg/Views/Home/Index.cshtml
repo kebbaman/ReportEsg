@@ -3,6 +3,29 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Benvenuto</h1>
+</div>
+
+<div class="container-fluid p-5" style="background-image: url('https://pixnio.com/free-images/2017/05/31/2017-05-31-10-46-40-900x600.jpg'); ">
+    <h2 class="display-4 ">QUESTIONARIO DI ANAGRAFICA DESCRITTIVA</h2>
+
+    <p><span style="color: #000000; font-size: 20px;"></span></p>
+
+    @using (Html.BeginForm("Take", "OrganizationDetailsSurveys", FormMethod.Get))
+    {
+        <input type="submit" class="btn btn-primary" value="INIZIA IL QUESTIONARIO DI ANAGRAFICA DESCRITTIVA" />
+    }
+
+</div>
+
+<div class="container-fluid p-5" style="background-image: url('https://pixnio.com/free-images/2017/05/31/2017-05-31-10-46-40-900x600.jpg'); ">
+    <h2 class="display-4 ">LE APPLICAZIONI DEDICATE ALLA TUA ORGANIZZAZIONE</h2>
+
+    <p><span style="color: #000000; font-size: 20px;"></span></p>
+
+    @using (Html.BeginForm("ShowList", "Applications", FormMethod.Get))
+    {
+        <input type="submit" class="btn btn-primary" value="VISUALIZZA LA LISTA DELLE APPLICAZIONI A TE DEDICATE" />
+    }
+
 </div>

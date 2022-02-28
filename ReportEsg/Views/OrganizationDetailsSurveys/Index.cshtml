@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ReportEsg.Models.OrganizationDetailsSurvey>
+
+@{
+    ViewData["Title"] = "Questionari di anagrafica descrittiva";
+}
+
+<h1>Questionari di anagrafica descrittiva</h1>
+
+<p>
+    <a asp-action="Create">Crea un nuovo questionario</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrganizationCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationCategory.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                <a asp-controller="OrganizationDetailsSurveyQuestions" asp-action="Index" asp-route-surveyId="@item.Id">Gestisci domande</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Modifica</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Elimina</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

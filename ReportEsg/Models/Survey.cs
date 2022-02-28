@@ -19,7 +19,7 @@ namespace ReportEsg.Models
         public string Title { get; set; }
 
         //[JsonProperty(PropertyName = "questions")]
-        //public List<SurveyQuestion> Questions { get; set; }
+        public List<SurveyQuestion> Questions { get; set; }
 
         
 
