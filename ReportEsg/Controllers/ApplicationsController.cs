@@ -183,7 +183,20 @@ namespace ReportEsg.Controllers
             {
                 return NotFound();
             }
-            return View(await _context.Applications.FindAsync(id));
+
+            //Ottengo lo username dell'azienda loggata e ne carico l'entità
+            string username = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
+
+            ApplicationSession session = new ApplicationSession();
+            session.DateTime = DateTime.Now;
+            session.ApplicationId = (int) id;
+            session.Username = organization.Username;
+
+            _context.Add(session);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("SelectThemes", "ApplicationSessions", new { id = session.ID });
         }
 
     }

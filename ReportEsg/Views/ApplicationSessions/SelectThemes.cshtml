@@ -1,0 +1,61 @@
+﻿@model Dictionary<string, bool>
+
+<p>Selezioni i temi che desidera trattare.</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SelectThemes" asp-route-id="@ViewBag.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <div class="col form-check">
+                    <div>
+                        @Html.LabelFor(model => Model.ToArray()[i].Value, Model.ToArray()[i].Key, htmlAttributes: new { @class = "form-check-label" })
+
+                        @Html.HiddenFor(model => Model.ToArray()[i].Key)
+                        @Html.CheckBoxFor(model => Model.ToArray()[i].Value, new { @class = "form-check-input" })
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Salva selezione" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+@*<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SelectThemes" asp-route-id="@ViewBag.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @foreach (var pair in Model)
+            {
+                <div class="form-group">
+                    <label class="control-label">@pair.Key</label>
+                    <input asp-for="@pair.Value"  />
+                    <span asp-validation-for="@pair.Value" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Salva selezione" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+

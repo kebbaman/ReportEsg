@@ -20,6 +20,7 @@ namespace ReportEsg.Models
         public string Username { get; set; }
         public Organization Organization { get; set; }
 
-       
+        public string ChoosenThemes { get; set; }
+
     }
 }

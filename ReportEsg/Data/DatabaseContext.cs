@@ -47,6 +47,8 @@ namespace ReportEsg.Data
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
+        public DbSet<ApplicationSession> ApplicationSessions { get; set; }
+
         
 
 
