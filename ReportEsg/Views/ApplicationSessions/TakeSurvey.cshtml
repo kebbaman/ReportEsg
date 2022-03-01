@@ -1,0 +1,49 @@
+﻿<div class="row">
+    <div class="col">
+        <div id="surveyContainer"></div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://surveyjs.azureedge.net/1.5.8/survey.jquery.min.js"></script>
+    <script>
+        var s = @Html.Raw(@ViewBag.Survey);
+        var surveyJSON = JSON.parse(JSON.stringify(s));
+
+        Survey.StylesManager.applyTheme("bootstrap");
+
+        const survey = new Survey.Model(surveyJSON);
+
+        $(function() {
+            $("#surveyContainer").Survey({ model: survey });
+        });
+
+
+        function alertResults(sender) {
+            const results = JSON.stringify(sender.data);
+            alert(results);
+        }
+
+        survey.onComplete.add(alertResults);
+
+
+        function saveSurvey(survey) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("TakeSurvey", "ApplicationSessions")',
+                data: {
+                    surveyResult: JSON.stringify(survey.data),
+                    applicationSessionId: @ViewBag.SessionId,
+                    surveyId: @ViewBag.SurveyID
+                }
+            })
+
+        }
+
+
+
+        survey.onComplete.add(saveSurvey);
+    </script>
+}

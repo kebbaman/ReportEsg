@@ -1,13 +1,13 @@
 ﻿@model ReportEsg.Models.ApplicationSession
 
 @{
-    ViewData["Title"] = "Session";
+    ViewData["Title"] = "Sessione di applicazione";
 }
 
-<h1>Session</h1>
+<h1>@Model.Application.Title</h1>
 
 <div>
-    <h4>ApplicationSession</h4>
+    <p>@Model.Application.Description</p>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -15,18 +15,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Application)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Application.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Organization)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Organization.Username)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ChoosenThemes)
@@ -37,15 +25,9 @@
     </dl>
 </div>
 
-
-
-
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Application)
-            </th>
             <th>
                 Tema materiale
             </th>
@@ -58,28 +40,24 @@
     <tbody>
         @foreach (var item in Model.Application.ApplicationSurveys)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Application.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Theme.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    <a asp-controller="ApplicationSurveyQuestions" asp-action="Index" asp-route-surveyId="@item.Id">Completa questionario</a>
-                </td>
-            </tr>
+            if (Model.ChoosenThemes.Contains(item.Theme.Description))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Theme.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @if ((Model.CompletedSurveys == null) || (!Model.CompletedSurveys.Contains(item.Title)))
+                        {
+                            <a asp-controller="ApplicationSessions" asp-action="TakeSurvey" asp-route-id="@Model.ApplicationId" asp-route-surveyId="@item.Id">Compila questionario</a>
+                        }
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
 
-
-
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>

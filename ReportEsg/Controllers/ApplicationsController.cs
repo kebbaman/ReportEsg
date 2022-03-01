@@ -188,6 +188,16 @@ namespace ReportEsg.Controllers
             string username = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
 
+            //Se esiste una sessione la riutilizzo, altrimenti ne creo una nuova e permetto all'utente di effettuare la selezione dei temi.
+            var existingSession = await _context.ApplicationSessions.FirstOrDefaultAsync(s => s.Username == organization.Username);
+
+            if(existingSession!=null)
+            {
+                if (existingSession.Completed)
+                    return Content("Hai già usufruito del servizio, contatta l'amministrazione se desideri ripeterne l'esecuzione.");
+                return RedirectToAction("Session", "ApplicationSessions", new { id = existingSession.ID });
+            }
+
             ApplicationSession session = new ApplicationSession();
             session.DateTime = DateTime.Now;
             session.ApplicationId = (int) id;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,5 +18,9 @@ namespace ReportEsg.Models
         public int ThemeId { get; set; }
         [Display(Name = "Tema materiale")]
         public Theme Theme { get; set; }
+
+        [JsonProperty(PropertyName = "questions")]
+        public List<ApplicationSurveyQuestion> ApplicationSurveyQuestions { get; set; }
+
     }
 }

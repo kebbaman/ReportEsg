@@ -45,9 +45,13 @@ namespace ReportEsg.Data
         public DbSet<TextOrganizationDetailsQuestion> TextOrganizationDetailsQuestion { get; set; }
         public DbSet<OrganizationDetailsSurveySession> OrganizationDetailsSurveySessions  { get; set; }
 
+        public DbSet<ApplicationSession> ApplicationSessions { get; set; }
+
+        public DbSet<ApplicationSurveyResult> ApplicationSurveyResults { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-        public DbSet<ApplicationSession> ApplicationSessions { get; set; }
+        
 
         
 
