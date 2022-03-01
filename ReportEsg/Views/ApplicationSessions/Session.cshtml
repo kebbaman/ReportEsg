@@ -10,16 +10,16 @@
     <p>@Model.Application.Description</p>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ChoosenThemes)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ChoosenThemes)
         </dd>
     </dl>
@@ -52,7 +52,7 @@
                     <td>
                         @if ((Model.CompletedSurveys == null) || (!Model.CompletedSurveys.Contains(item.Title)))
                         {
-                            <a asp-controller="ApplicationSessions" asp-action="TakeSurvey" asp-route-id="@Model.ApplicationId" asp-route-surveyId="@item.Id">Compila questionario</a>
+                            <a asp-controller="ApplicationSessions" asp-action="TakeSurvey" asp-route-applicationSessionId="@Model.ID" asp-route-surveyId="@item.Id">Compila questionario</a>
                         }
                     </td>
                 </tr>
@@ -60,4 +60,3 @@
         }
     </tbody>
 </table>
-

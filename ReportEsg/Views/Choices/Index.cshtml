@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ReportEsg.Models.Choice>
+
+@{
+    ViewData["Title"] = "Scelte";
+}
+
+<h1>Scelte</h1>
+
+<p>
+    <a asp-action="Create" asp-route-questionId="@ViewBag.QuestionId" asp-route-surveyId="@ViewBag.SurveyId">Crea una nuova scelta</a> |
+    <a asp-controller="ApplicationSurveyQuestions" asp-action="Index" asp-route-surveyId="@ViewBag.SurveyId">Torna alla lista delle domande</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationSurveyQuestion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Score)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationSurveyQuestion.Title)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" asp-route-questionId="@ViewBag.QuestionId" asp-route-surveyId="@ViewBag.SurveyId" >Modifica</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" asp-route-questionId="@ViewBag.QuestionId" asp-route-surveyId="@ViewBag.SurveyId">Elimina</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

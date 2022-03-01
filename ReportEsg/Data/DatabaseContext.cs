@@ -51,6 +51,10 @@ namespace ReportEsg.Data
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
+        public DbSet<RadioApplicationSurveyQuestion> RadioApplicationSurveyQuestion { get; set; }
+
+        public DbSet<Choice> Choice { get; set; }
+
         
 
         

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ReportEsg.Data;
@@ -9,9 +10,10 @@ using ReportEsg.Data;
 namespace ReportEsg.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220301131818_EditedSurveyResultsInApplicationSessions")]
+    partial class EditedSurveyResultsInApplicationSessions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,34 +121,6 @@ namespace ReportEsg.Migrations
                     b.HasIndex("PillarId");
 
                     b.ToTable("Areas");
-                });
-
-            modelBuilder.Entity("ReportEsg.Models.Choice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ApplicationSurveyQuestionId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("RadioApplicationSurveyQuestionId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationSurveyQuestionId");
-
-                    b.HasIndex("RadioApplicationSurveyQuestionId");
-
-                    b.ToTable("Choices");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.OrganizationCategory", b =>
@@ -504,17 +478,7 @@ namespace ReportEsg.Migrations
                 {
                     b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
-
                     b.HasDiscriminator().HasValue("BooleanApplicationSurveyQuestion");
-                });
-
-            modelBuilder.Entity("ReportEsg.Models.RadioApplicationSurveyQuestion", b =>
-                {
-                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
-
-                    b.HasDiscriminator().HasValue("RadioApplicationSurveyQuestion");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.TextApplicationSurveyQuestion", b =>
@@ -572,19 +536,6 @@ namespace ReportEsg.Migrations
                         .HasForeignKey("PillarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ReportEsg.Models.Choice", b =>
-                {
-                    b.HasOne("ReportEsg.Models.ApplicationSurveyQuestion", "ApplicationSurveyQuestion")
-                        .WithMany()
-                        .HasForeignKey("ApplicationSurveyQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReportEsg.Models.RadioApplicationSurveyQuestion", null)
-                        .WithMany("Choices")
-                        .HasForeignKey("RadioApplicationSurveyQuestionId");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.OrganizationCategoryPerApplication", b =>

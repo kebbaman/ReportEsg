@@ -29,7 +29,7 @@ namespace ReportEsg.Models
 
         public string CompletedSurveys { get; set; }
 
-        public List<string> SurveyResults { get; set; }
+        public List<ApplicationSurveyResult> SurveyResults { get; set; }
 
 
     }

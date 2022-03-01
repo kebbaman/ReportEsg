@@ -28,153 +28,10 @@ namespace ReportEsg.Controllers
             return View(await databaseContext.ToListAsync());
         }
 
-        // GET: ApplicationSessions/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var applicationSession = await _context.ApplicationSessions
-                .Include(a => a.Application)
-                .Include(a => a.Organization)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (applicationSession == null)
-            {
-                return NotFound();
-            }
-
-            return View(applicationSession);
-        }
-
-        // GET: ApplicationSessions/Create
-        public IActionResult Create()
-        {
-            ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Id");
-            ViewData["Username"] = new SelectList(_context.Organizations, "Username", "Username");
-            return View();
-        }
-
-        // POST: ApplicationSessions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,DateTime,ApplicationId,Username,ChoosenThemes")] ApplicationSession applicationSession)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(applicationSession);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Id", applicationSession.ApplicationId);
-            ViewData["Username"] = new SelectList(_context.Organizations, "Username", "Username", applicationSession.Username);
-            return View(applicationSession);
-        }
-
-        // GET: ApplicationSessions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var applicationSession = await _context.ApplicationSessions.FindAsync(id);
-            if (applicationSession == null)
-            {
-                return NotFound();
-            }
-            ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Id", applicationSession.ApplicationId);
-            ViewData["Username"] = new SelectList(_context.Organizations, "Username", "Username", applicationSession.Username);
-            return View(applicationSession);
-        }
-
-        // POST: ApplicationSessions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,DateTime,ApplicationId,Username,ChoosenThemes")] ApplicationSession applicationSession)
-        {
-            if (id != applicationSession.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(applicationSession);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ApplicationSessionExists(applicationSession.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ApplicationId"] = new SelectList(_context.Applications, "Id", "Id", applicationSession.ApplicationId);
-            ViewData["Username"] = new SelectList(_context.Organizations, "Username", "Username", applicationSession.Username);
-            return View(applicationSession);
-        }
-
-        // GET: ApplicationSessions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var applicationSession = await _context.ApplicationSessions
-                .Include(a => a.Application)
-                .Include(a => a.Organization)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (applicationSession == null)
-            {
-                return NotFound();
-            }
-
-            return View(applicationSession);
-        }
-
-        // POST: ApplicationSessions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var applicationSession = await _context.ApplicationSessions.FindAsync(id);
-            _context.ApplicationSessions.Remove(applicationSession);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool ApplicationSessionExists(int id)
         {
             return _context.ApplicationSessions.Any(e => e.ID == id);
         }
-
-
-
-
-
-
-
-
-
-
-
 
         // GET: ApplicationSessions/SelectThemes
         public async Task<IActionResult> SelectThemes(int? id)
@@ -228,7 +85,6 @@ namespace ReportEsg.Controllers
             return View(chooseThemes);
         }
 
-
         public async Task<IActionResult> Session(int? id)
         {
             if (id == null)
@@ -237,15 +93,6 @@ namespace ReportEsg.Controllers
             var applicationSession = await _context.ApplicationSessions.Include(s=>s.Application).ThenInclude(a=>a.ApplicationSurveys).ThenInclude(s=>s.Theme).FirstOrDefaultAsync(s=>s.ID == id);
             return View(applicationSession);
         }
-
-
-
-
-
-
-
-
-
 
         //[Authorize(Roles = "Azienda")]
         public async Task<IActionResult> TakeSurvey(int applicationSessionId, int surveyId)
@@ -284,7 +131,7 @@ namespace ReportEsg.Controllers
 
 
                 //Carico la sessione
-                var applicationSession = await _context.ApplicationSessions.Include(s => s.Application).ThenInclude(a => a.ApplicationSurveys).ThenInclude(s => s.Theme).FirstOrDefaultAsync(s => s.ID == applicationSessionId);
+                var applicationSession =  _context.ApplicationSessions.Include(s => s.Application).ThenInclude(a => a.ApplicationSurveys).ThenInclude(s => s.Theme).FirstOrDefault(s => s.ID == applicationSessionId);
 
                 string surveyName = applicationSession.Application.ApplicationSurveys.FirstOrDefault(s => s.Id == surveyId).Title;
 
@@ -306,9 +153,5 @@ namespace ReportEsg.Controllers
             }
             return View();
         }
-
-
-
-
     }
 }

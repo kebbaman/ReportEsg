@@ -11,5 +11,6 @@ namespace ReportEsg.Models
         [Display(Name = "Questionario")]
         public int ApplicationSurveyId { get; set; }
         public ApplicationSurvey ApplicationSurvey { get; set; }
+
     }
 }

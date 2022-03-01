@@ -1,0 +1,42 @@
+﻿@model ReportEsg.Models.Choice
+
+@{
+    ViewData["Title"] = "Crea una nuova scelta";
+}
+
+<h1>Crea una nuova scelta</h1>
+
+<h4>Scelta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-route-questionId="@ViewBag.QuestionId"  asp-route-surveyId="@ViewBag.SurveyId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Score" class="control-label"></label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationSurveyQuestionId" class="control-label"></label>
+                <input asp-for="ApplicationSurveyQuestionId" class ="form-control" value="@ViewBag.QuestionId" readonly/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crea" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-questionId="@ViewBag.QuestionId"  asp-route-surveyId="@ViewBag.SurveyId">Torna alla lista delle scelte per la domanda</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

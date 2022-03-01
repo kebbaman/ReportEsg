@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ReportEsg.Data;
@@ -9,9 +10,10 @@ using ReportEsg.Data;
 namespace ReportEsg.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220301153305_AddChoices")]
+    partial class AddChoices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,7 +123,7 @@ namespace ReportEsg.Migrations
                     b.ToTable("Areas");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.Choice", b =>
+            modelBuilder.Entity("ReportEsg.Models.Choices", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -510,11 +512,11 @@ namespace ReportEsg.Migrations
                     b.HasDiscriminator().HasValue("BooleanApplicationSurveyQuestion");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.RadioApplicationSurveyQuestion", b =>
+            modelBuilder.Entity("ReportEsg.Models.RadioApplicationSurveyQuestions", b =>
                 {
                     b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
 
-                    b.HasDiscriminator().HasValue("RadioApplicationSurveyQuestion");
+                    b.HasDiscriminator().HasValue("RadioApplicationSurveyQuestions");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.TextApplicationSurveyQuestion", b =>
@@ -574,7 +576,7 @@ namespace ReportEsg.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.Choice", b =>
+            modelBuilder.Entity("ReportEsg.Models.Choices", b =>
                 {
                     b.HasOne("ReportEsg.Models.ApplicationSurveyQuestion", "ApplicationSurveyQuestion")
                         .WithMany()
@@ -582,7 +584,7 @@ namespace ReportEsg.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ReportEsg.Models.RadioApplicationSurveyQuestion", null)
+                    b.HasOne("ReportEsg.Models.RadioApplicationSurveyQuestions", null)
                         .WithMany("Choices")
                         .HasForeignKey("RadioApplicationSurveyQuestionId");
                 });

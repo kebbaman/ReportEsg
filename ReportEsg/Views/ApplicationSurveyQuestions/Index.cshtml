@@ -9,6 +9,7 @@
 <p>
     <a asp-action="CreateTextQuestion" asp-route-surveyId="@ViewBag.SurveyId">Crea una nuova domanda aperta</a> |
     <a asp-action="CreateBooleanQuestion" asp-route-surveyId="@ViewBag.SurveyId">Crea una nuova domanda booleana</a> |
+    <a asp-action="CreateRadioQuestion" asp-route-surveyId="@ViewBag.SurveyId">Crea una nuova domanda a scelta multipla(radio)</a> |
     <a asp-controller="ApplicationSurveys" asp-action="Index" asp-route-applicationId="@ViewBag.ApplicationId">Torna alla schermata di gestione dell'applicazione</a>
 </p>
 <table class="table">
@@ -45,6 +46,10 @@
                 @Html.DisplayFor(modelItem => item.IsRequired)
             </td>
             <td>
+                @if ((item.Type == "radiogroup") || (item.Type == "checkbox"))
+                {
+                    <a asp-controller="Choices" asp-action="Index" asp-route-questionId="@item.Id" asp-route-surveyId="@ViewBag.SurveyId" >Gestisci scelte</a> @string.Format("|");
+                }
                 <a asp-action="Edit" asp-route-id="@item.Id" asp-route-surveyId="@ViewBag.surveyId">Modifica</a> |
                 <a asp-action="Details" asp-route-id="@item.Id" asp-route-surveyId="@ViewBag.surveyId">Visualizza</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id" asp-route-surveyId="@ViewBag.surveyId">Elimina</a>
