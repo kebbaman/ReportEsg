@@ -11,6 +11,14 @@
     <Compile Remove="Migrations\20220227162917_AddSimpleSurveys.Designer.cs" />
     <Compile Remove="Migrations\20220227163636_AddSimpleSurveys.cs" />
     <Compile Remove="Migrations\20220227163636_AddSimpleSurveys.Designer.cs" />
+    <Compile Remove="Migrations\20220301153305_AddChoices.cs" />
+    <Compile Remove="Migrations\20220301153305_AddChoices.Designer.cs" />
+    <Compile Remove="Migrations\20220301162057_FixedRadioQuestions.cs" />
+    <Compile Remove="Migrations\20220301162057_FixedRadioQuestions.Designer.cs" />
+    <Compile Remove="Migrations\20220302083808_AddCheckboxApplicationSurveyQuestions.cs" />
+    <Compile Remove="Migrations\20220302083808_AddCheckboxApplicationSurveyQuestions.Designer.cs" />
+    <Compile Remove="Migrations\20220302084007_AddCheckboxApplicationSurveyQuestions.cs" />
+    <Compile Remove="Migrations\20220302084007_AddCheckboxApplicationSurveyQuestions.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

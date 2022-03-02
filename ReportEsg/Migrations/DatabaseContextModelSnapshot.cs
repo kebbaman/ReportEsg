@@ -134,17 +134,12 @@ namespace ReportEsg.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int?>("RadioApplicationSurveyQuestionId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Score")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationSurveyQuestionId");
-
-                    b.HasIndex("RadioApplicationSurveyQuestionId");
 
                     b.ToTable("Choices");
                 });
@@ -415,6 +410,9 @@ namespace ReportEsg.Migrations
                     b.Property<int>("ApplicationSurveyId")
                         .HasColumnType("integer");
 
+                    b.Property<bool?>("HasOther")
+                        .HasColumnType("boolean");
+
                     b.HasIndex("ApplicationSurveyId");
 
                     b.HasDiscriminator().HasValue("ApplicationSurveyQuestion");
@@ -510,6 +508,13 @@ namespace ReportEsg.Migrations
                     b.HasDiscriminator().HasValue("BooleanApplicationSurveyQuestion");
                 });
 
+            modelBuilder.Entity("ReportEsg.Models.CheckboxApplicationSurveyQuestion", b =>
+                {
+                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
+
+                    b.HasDiscriminator().HasValue("CheckboxApplicationSurveyQuestion");
+                });
+
             modelBuilder.Entity("ReportEsg.Models.RadioApplicationSurveyQuestion", b =>
                 {
                     b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
@@ -577,14 +582,10 @@ namespace ReportEsg.Migrations
             modelBuilder.Entity("ReportEsg.Models.Choice", b =>
                 {
                     b.HasOne("ReportEsg.Models.ApplicationSurveyQuestion", "ApplicationSurveyQuestion")
-                        .WithMany()
+                        .WithMany("Choices")
                         .HasForeignKey("ApplicationSurveyQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ReportEsg.Models.RadioApplicationSurveyQuestion", null)
-                        .WithMany("Choices")
-                        .HasForeignKey("RadioApplicationSurveyQuestionId");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.OrganizationCategoryPerApplication", b =>

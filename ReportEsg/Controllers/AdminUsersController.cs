@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ReportEsg.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminUsersController : Controller
     {
         private readonly DatabaseContext _context;
@@ -18,7 +19,7 @@ namespace ReportEsg.Controllers
         {
             _context = context;
         }
-        //[Authorize(Roles = "Admin,Consulente")]
+        
         // GET: AdminUsers
         public async Task<IActionResult> Index()
         {

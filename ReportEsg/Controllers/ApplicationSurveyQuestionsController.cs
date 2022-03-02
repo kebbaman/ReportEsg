@@ -139,10 +139,6 @@ namespace ReportEsg.Controllers
             return View(applicationSurveyQuestion);
         }
 
-
-
-
-
         // GET: ApplicationSurveyQuestions/Create
         public IActionResult CreateRadioQuestion(int? surveyId)
         {
@@ -160,7 +156,7 @@ namespace ReportEsg.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateRadioQuestion([Bind("Id,Name,Title,IsRequired,ApplicationSurveyId,Type,Score")] BooleanApplicationSurveyQuestion applicationSurveyQuestion, int surveyId)
+        public async Task<IActionResult> CreateRadioQuestion([Bind("Id,Name,Title,IsRequired,ApplicationSurveyId,Type,Score")] RadioApplicationSurveyQuestion applicationSurveyQuestion, int surveyId)
         {
             if (ModelState.IsValid)
             {
@@ -174,19 +170,36 @@ namespace ReportEsg.Controllers
             return View(applicationSurveyQuestion);
         }
 
+        // GET: ApplicationSurveyQuestions/Create
+        public IActionResult CreateCheckboxQuestion(int? surveyId)
+        {
+            if (surveyId == null)
+            {
+                return NotFound();
+            }
+            ViewBag.SurveyId = surveyId;
+            ViewBag.Name = Guid.NewGuid().ToString();
+            return View();
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
+        // POST: ApplicationSurveyQuestions/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCheckboxQuestion([Bind("Id,Name,Title,IsRequired,ApplicationSurveyId,Type,Score")] CheckboxApplicationSurveyQuestion applicationSurveyQuestion, int surveyId)
+        {
+            if (ModelState.IsValid)
+            {
+                applicationSurveyQuestion.ApplicationSurveyId = surveyId;
+                applicationSurveyQuestion.Type = "checkbox";
+                _context.Add(applicationSurveyQuestion);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { surveyId = surveyId });
+            }
+            ViewBag.SurveyId = surveyId;
+            return View(applicationSurveyQuestion);
+        }
 
         // GET: ApplicationSurveyQuestions/Edit/5
         public async Task<IActionResult> Edit(int? id, int? surveyId)

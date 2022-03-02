@@ -10,8 +10,8 @@ using ReportEsg.Data;
 namespace ReportEsg.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220301153305_AddChoices")]
-    partial class AddChoices
+    [Migration("20220302084615_AddRadioAndCheckboxesQuestions")]
+    partial class AddRadioAndCheckboxesQuestions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -123,7 +123,7 @@ namespace ReportEsg.Migrations
                     b.ToTable("Areas");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.Choices", b =>
+            modelBuilder.Entity("ReportEsg.Models.Choice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -136,17 +136,12 @@ namespace ReportEsg.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int?>("RadioApplicationSurveyQuestionId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Score")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationSurveyQuestionId");
-
-                    b.HasIndex("RadioApplicationSurveyQuestionId");
 
                     b.ToTable("Choices");
                 });
@@ -417,6 +412,9 @@ namespace ReportEsg.Migrations
                     b.Property<int>("ApplicationSurveyId")
                         .HasColumnType("integer");
 
+                    b.Property<bool?>("HasOther")
+                        .HasColumnType("boolean");
+
                     b.HasIndex("ApplicationSurveyId");
 
                     b.HasDiscriminator().HasValue("ApplicationSurveyQuestion");
@@ -512,11 +510,18 @@ namespace ReportEsg.Migrations
                     b.HasDiscriminator().HasValue("BooleanApplicationSurveyQuestion");
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.RadioApplicationSurveyQuestions", b =>
+            modelBuilder.Entity("ReportEsg.Models.CheckboxApplicationSurveyQuestion", b =>
                 {
                     b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
 
-                    b.HasDiscriminator().HasValue("RadioApplicationSurveyQuestions");
+                    b.HasDiscriminator().HasValue("CheckboxApplicationSurveyQuestion");
+                });
+
+            modelBuilder.Entity("ReportEsg.Models.RadioApplicationSurveyQuestion", b =>
+                {
+                    b.HasBaseType("ReportEsg.Models.ApplicationSurveyQuestion");
+
+                    b.HasDiscriminator().HasValue("RadioApplicationSurveyQuestion");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.TextApplicationSurveyQuestion", b =>
@@ -576,17 +581,13 @@ namespace ReportEsg.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ReportEsg.Models.Choices", b =>
+            modelBuilder.Entity("ReportEsg.Models.Choice", b =>
                 {
                     b.HasOne("ReportEsg.Models.ApplicationSurveyQuestion", "ApplicationSurveyQuestion")
-                        .WithMany()
+                        .WithMany("Choices")
                         .HasForeignKey("ApplicationSurveyQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ReportEsg.Models.RadioApplicationSurveyQuestions", null)
-                        .WithMany("Choices")
-                        .HasForeignKey("RadioApplicationSurveyQuestionId");
                 });
 
             modelBuilder.Entity("ReportEsg.Models.OrganizationCategoryPerApplication", b =>

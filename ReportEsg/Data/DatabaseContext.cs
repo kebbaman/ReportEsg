@@ -49,11 +49,15 @@ namespace ReportEsg.Data
 
         public DbSet<ApplicationSurveyResult> ApplicationSurveyResults { get; set; }
 
+        public DbSet<RadioApplicationSurveyQuestion> RadioApplicationSurveyQuestions { get; set; }
+
+        public DbSet<Choice> Choices { get; set; }
+
+        public DbSet<CheckboxApplicationSurveyQuestion> CheckboxApplicationSurveyQuestions { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-        public DbSet<RadioApplicationSurveyQuestion> RadioApplicationSurveyQuestion { get; set; }
-
-        public DbSet<Choice> Choice { get; set; }
+        
 
         
 

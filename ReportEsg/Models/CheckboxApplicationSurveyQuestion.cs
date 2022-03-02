@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 
 namespace ReportEsg.Models
 {
-    public class RadioApplicationSurveyQuestion : ApplicationSurveyQuestion
+    public class CheckboxApplicationSurveyQuestion : ApplicationSurveyQuestion
     {
         [JsonProperty(PropertyName = "choices")]
         public override List<Choice> Choices { get; set; }
+        
+        [JsonProperty(PropertyName = "hasOther")]
+        [Display(Name = "Includere campo altro?")]
+        public override bool? HasOther { get; set; }
+
 
     }
 }

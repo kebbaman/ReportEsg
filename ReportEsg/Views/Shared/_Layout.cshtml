@@ -21,38 +21,51 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="#">Utenti</a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-action="Index" asp-controller="AdminUsers">Amministratori</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="ConsultantUsers" asp-action="Index">Consulenti</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Roles" asp-action="Index">Ruoli</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Organizations" asp-action="Index">Organizzazioni</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="#">Anagrafica descrittiva</a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="OrganizationDetailsSurveys" asp-action="Index">Gestisci applicazione</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="OrganizationDetailsSurveySessions" asp-action="Index">Visualizza risultati</a>
-                                </li>
-                            </ul>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Applications" asp-action="Index">Applicazioni</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="#">Utenti</a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-action="Index" asp-controller="AdminUsers">Amministratori</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-controller="ConsultantUsers" asp-action="Index">Consulenti</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-controller="Roles" asp-action="Index">Ruoli</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+
+                            if ((User.IsInRole("Admin")) || (User.IsInRole("Consulente")))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Organizations" asp-action="Index">Organizzazioni</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link text-dark dropdown-toggle" data-toggle="dropdown" href="#">Anagrafica descrittiva</a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-controller="OrganizationDetailsSurveys" asp-action="Index">Gestisci applicazione</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-controller="OrganizationDetailsSurveySessions" asp-action="Index">Visualizza risultati</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Applications" asp-action="Index">Applicazioni</a>
+                                </li>
+                            }
+
+                        }
+
                     </ul>
                 </div>
                 <div class="mr-2">

@@ -21,6 +21,7 @@ namespace ReportEsg.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin,Consulente")]
         // GET: Applications
         public async Task<IActionResult> Index()
         {
@@ -44,7 +45,7 @@ namespace ReportEsg.Controllers
 
             return View(application);
         }
-
+        [Authorize(Roles = "Admin,Consulente")]
         // GET: Applications/Create
         public IActionResult Create()
         {

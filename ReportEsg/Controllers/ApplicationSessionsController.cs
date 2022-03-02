@@ -104,6 +104,7 @@ namespace ReportEsg.Controllers
             //Carico il questionario
             var applicationSurvey = await _context.ApplicationSurveys
                .Include(s => s.ApplicationSurveyQuestions)
+               .ThenInclude(q=>q.Choices)
                .FirstOrDefaultAsync(s => s.Id == surveyId);
 
             string survey = JsonConvert.SerializeObject(applicationSurvey, new JsonSerializerSettings()
