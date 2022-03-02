@@ -73,7 +73,9 @@ namespace ReportEsg.Controllers
                         if (i > 0)
                             themesList += ",";
                         themesList += choise.Key;
+                        i++;
                     }
+                    
                 }
                 applicationSession.ChoosenThemes = themesList;
                 _context.Update(applicationSession);
@@ -154,5 +156,130 @@ namespace ReportEsg.Controllers
             }
             return View();
         }
+
+
+        public async Task<IActionResult> Complete(int? applicationSessionId)
+        {
+            if (applicationSessionId == null)
+                return NotFound();
+
+            //Ottengo lo username dell'azienda loggata e ne carico l'entità
+            string username = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
+
+
+            //Ottengo il questionario di anagrafica descrittiva compilato dall'azienda
+            var organizationDetailsSurvey = await _context.OrganizationDetailsSurveySessions
+                .Include(s=>s.OrganizationDetailsSurvey)
+                .ThenInclude(s=>s.OrganizationDetailsSurveyQuestions)
+                .FirstOrDefaultAsync(s => s.Username == organization.Username);
+
+
+
+            //Genero la lista delle risposte date al questionario di anagrafica descrittiva
+            List<Answer> organizationDetails = new List<Answer>();
+
+            foreach (var item in organizationDetailsSurvey.SurveyResultObject)
+            {
+                var question = organizationDetailsSurvey.OrganizationDetailsSurvey.OrganizationDetailsSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                string domanda = question.Title;
+
+                string risposta = StringifyAnswer(question.Type,item.Value);
+
+                organizationDetails.Add(new Answer(item.Key,domanda,risposta));
+            }
+
+            ViewBag.OrganizationDetails = organizationDetails;
+
+
+            //Genero la lista delle risposte date ai vari questionari divise per temi
+            Dictionary<string, List<Answer>> applicationReport = new Dictionary<string, List<Answer>>();
+
+            //Carico la sessione appena terminata
+            var applicationSession = await _context.ApplicationSessions.Include(s=>s.Application).Include(s=>s.SurveyResults).ThenInclude(r=>r.ApplicationSurvey).ThenInclude(s=>s.Theme).Include("SurveyResults.ApplicationSurvey.ApplicationSurveyQuestions").FirstOrDefaultAsync(s => s.ID == applicationSessionId);
+
+            //Ottengo la lista dei questionari completati
+            List <ApplicationSurveyResult> surveys = applicationSession.SurveyResults;
+
+            //Carico la lista dei temi scelti dall'utente nell'esecuzione dell'applicativo
+            List<string> chosen = applicationSession.ChoosenThemes.Split(",").ToList();
+
+            //Ottengo gli oggetti Answer Per ogni tema
+            foreach(string theme in chosen)
+            {
+                //Genero la lista delle risposte date ai questionari del tema
+                List<Answer> answers = new List<Answer>();
+
+
+                List<ApplicationSurveyResult> results = surveys.Where(s => s.ApplicationSurvey.Theme.Description == theme).ToList();
+                foreach(ApplicationSurveyResult result in results)
+                {
+                    foreach (var item in result.SurveyResultObject)
+                    {
+
+                        var question = result.ApplicationSurvey.ApplicationSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                        string domanda = question.Title;
+
+                        string risposta = StringifyAnswer(question.Type, item.Value);
+
+                        answers.Add(new Answer(item.Key,domanda,risposta));
+                    }
+                }
+
+
+                applicationReport.Add(theme, answers);
+            }
+
+            ViewBag.ApplicationReport = applicationReport;
+
+            ViewBag.ApplicationSessionId = applicationSessionId;
+
+
+            ViewBag.ApplicationTitle = applicationSession.Application.Title;
+            ViewBag.CompanyName = organization.CompanyName;
+            return View();
+        }
+
+        private string StringifyAnswer(string type, object answer)
+        {
+            switch (type)
+            {
+                case "boolean":
+
+                    //Answer
+                    if ((bool)answer)
+                    {
+                        return "Vero";
+                    }
+                    else
+                    {
+                        return "Falso";
+                    }
+                case "text":
+                    return (string)answer;
+                case "checkbox":
+                    List<string> choosed = ((Newtonsoft.Json.Linq.JArray)answer).ToObject<List<string>>();
+
+                    string s = "Scelte: ";
+                    int i = 0;
+                    foreach (string item in choosed)
+                    {
+                        if (i > 0)
+                            s += ",";
+                        s += item;
+                        i++;
+                    }
+                    return s;
+                case "radiogroup":
+                    return (string)answer;
+                default:
+                    return "";
+            }
+        }
+
+
+
     }
 }

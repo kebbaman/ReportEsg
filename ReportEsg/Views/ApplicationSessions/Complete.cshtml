@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewData["Title"] = "Sessione di applicazione";
+}
+
+
+<h1>Report Applicazione @ViewBag.ApplicationTitle per @ViewBag.CompanyName</h1>
+
+<h2>Anagrafica descrittiva</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Codice
+            </th>
+            <th>
+                Domanda
+            </th>
+            <th>
+                Risposta
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.OrganizationDetails)
+        {
+
+            <tr>
+                <td>
+                    @item.CodiceDomanda
+                </td>
+                <td>
+                    @item.Domanda
+                </td>
+                <td>
+                    @item.Risposta
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>@ViewBag.ApplicationTitle</h2>
+
+@foreach (var item in ViewBag.ApplicationReport)
+{
+    <h3>@item.Key</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Codice
+                </th>
+                <th>
+                    Domanda
+                </th>
+                <th>
+                    Risposta
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var answer in item.Value)
+            {
+
+                <tr>
+                    <td>
+                        @answer.CodiceDomanda
+                    </td>
+                    <td>
+                        @answer.Domanda
+                    </td>
+                    <td>
+                        @answer.Risposta
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<input type="button" onclick="ExportToPdf()" value="Export to Pdf">
+@section scripts
+{
+    <script>
+        function ExportToPdf()
+        {
+            window.print();
+        }
+    </script>
+}

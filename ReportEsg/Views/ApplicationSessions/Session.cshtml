@@ -60,3 +60,15 @@
         }
     </tbody>
 </table>
+
+
+
+<div class="container-fluid p-5">
+
+    @using (Html.BeginForm("Complete", "ApplicationSessions", FormMethod.Get))
+    {
+        <input type="hidden" id="applicationSessionId" name="applicationSessionId" value="@Model.ID" />
+        <input type="submit" class="btn btn-primary" value="COMPLETA SESSIONE" />
+    }
+
+</div>
