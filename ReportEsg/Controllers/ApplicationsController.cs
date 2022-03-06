@@ -57,7 +57,7 @@ namespace ReportEsg.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description")] Application application)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,NeedsScoreCalculations")] Application application)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace ReportEsg.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description")] Application application)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,NeedsScoreCalculations")] Application application)
         {
             if (id != application.Id)
             {
@@ -190,12 +190,17 @@ namespace ReportEsg.Controllers
             Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
 
             //Se esiste una sessione la riutilizzo, altrimenti ne creo una nuova e permetto all'utente di effettuare la selezione dei temi.
-            var existingSession = await _context.ApplicationSessions.FirstOrDefaultAsync(s => s.Username == organization.Username);
+            var existingSession = await _context.ApplicationSessions.FirstOrDefaultAsync(s => s.Username == organization.Username && s.ApplicationId == id);
 
             if(existingSession!=null)
             {
                 if (existingSession.Completed)
-                    return Content("Hai già usufruito del servizio, contatta l'amministrazione se desideri ripeterne l'esecuzione.");
+                {
+                    //return Content("Hai già usufruito del servizio, contatta l'amministrazione se desideri ripeterne l'esecuzione.");
+                    return RedirectToAction("NoRepetition");
+                }   
+                if(string.IsNullOrEmpty(existingSession.ChoosenThemes))  //Se non sono ancora stati scelti dei temi, riportare alla selezione dei temi.
+                    return RedirectToAction("SelectThemes", "ApplicationSessions", new { id = existingSession.ID });
                 return RedirectToAction("Session", "ApplicationSessions", new { id = existingSession.ID });
             }
 
@@ -208,6 +213,11 @@ namespace ReportEsg.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("SelectThemes", "ApplicationSessions", new { id = session.ID });
+        }
+
+        public IActionResult NoRepetition()
+        {
+            return View();
         }
 
     }

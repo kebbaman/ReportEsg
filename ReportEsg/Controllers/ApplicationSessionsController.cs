@@ -22,9 +22,12 @@ namespace ReportEsg.Controllers
         }
 
         // GET: ApplicationSessions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? applicationId)
         {
-            var databaseContext = _context.ApplicationSessions.Include(a => a.Application).Include(a => a.Organization);
+            if (applicationId == null)
+                return NotFound();
+
+            var databaseContext = _context.ApplicationSessions.Include(a => a.Application).Include(a => a.Organization).Where(s=>s.ApplicationId == applicationId && s.Completed == true);
             return View(await databaseContext.ToListAsync());
         }
 
@@ -199,6 +202,11 @@ namespace ReportEsg.Controllers
             //Carico la sessione appena terminata
             var applicationSession = await _context.ApplicationSessions.Include(s=>s.Application).Include(s=>s.SurveyResults).ThenInclude(r=>r.ApplicationSurvey).ThenInclude(s=>s.Theme).Include("SurveyResults.ApplicationSurvey.ApplicationSurveyQuestions").FirstOrDefaultAsync(s => s.ID == applicationSessionId);
 
+            //Segno come completata la sessione appena terminata
+            applicationSession.Completed = true;
+            _context.Update(applicationSession);
+            await _context.SaveChangesAsync();
+
             //Ottengo la lista dei questionari completati
             List <ApplicationSurveyResult> surveys = applicationSession.SurveyResults;
 
@@ -279,7 +287,342 @@ namespace ReportEsg.Controllers
             }
         }
 
+        public async Task<IActionResult> Report(int? applicationSessionId, string username)
+        {
+            if (applicationSessionId == null)
+                return NotFound();
+
+            Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
 
 
+            //Ottengo il questionario di anagrafica descrittiva compilato dall'azienda
+            var organizationDetailsSurvey = await _context.OrganizationDetailsSurveySessions
+                .Include(s => s.OrganizationDetailsSurvey)
+                .ThenInclude(s => s.OrganizationDetailsSurveyQuestions)
+                .FirstOrDefaultAsync(s => s.Username == organization.Username);
+
+
+
+            //Genero la lista delle risposte date al questionario di anagrafica descrittiva
+            List<Answer> organizationDetails = new List<Answer>();
+
+            foreach (var item in organizationDetailsSurvey.SurveyResultObject)
+            {
+                var question = organizationDetailsSurvey.OrganizationDetailsSurvey.OrganizationDetailsSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                string domanda = question.Title;
+
+                string risposta = StringifyAnswer(question.Type, item.Value);
+
+                organizationDetails.Add(new Answer(item.Key, domanda, risposta));
+            }
+
+            ViewBag.OrganizationDetails = organizationDetails;
+
+
+            //Genero la lista delle risposte date ai vari questionari divise per temi
+            Dictionary<string, List<Answer>> applicationReport = new Dictionary<string, List<Answer>>();
+
+            //Carico la sessione appena terminata
+            var applicationSession = await _context.ApplicationSessions.Include(s => s.Application).Include(s => s.SurveyResults).ThenInclude(r => r.ApplicationSurvey).ThenInclude(s => s.Theme).Include("SurveyResults.ApplicationSurvey.ApplicationSurveyQuestions").FirstOrDefaultAsync(s => s.ID == applicationSessionId);
+
+            //Segno come completata la sessione appena terminata
+            applicationSession.Completed = true;
+            _context.Update(applicationSession);
+            await _context.SaveChangesAsync();
+
+            //Ottengo la lista dei questionari completati
+            List<ApplicationSurveyResult> surveys = applicationSession.SurveyResults;
+
+            //Carico la lista dei temi scelti dall'utente nell'esecuzione dell'applicativo
+            List<string> chosen = applicationSession.ChoosenThemes.Split(",").ToList();
+
+            //Ottengo gli oggetti Answer Per ogni tema
+            foreach (string theme in chosen)
+            {
+                //Genero la lista delle risposte date ai questionari del tema
+                List<Answer> answers = new List<Answer>();
+
+
+                List<ApplicationSurveyResult> results = surveys.Where(s => s.ApplicationSurvey.Theme.Description == theme).ToList();
+                foreach (ApplicationSurveyResult result in results)
+                {
+                    foreach (var item in result.SurveyResultObject)
+                    {
+
+                        var question = result.ApplicationSurvey.ApplicationSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                        string domanda = question.Title;
+
+                        string risposta = StringifyAnswer(question.Type, item.Value);
+
+                        answers.Add(new Answer(item.Key, domanda, risposta));
+                    }
+                }
+
+
+                applicationReport.Add(theme, answers);
+            }
+
+            ViewBag.ApplicationReport = applicationReport;
+
+            ViewBag.ApplicationSessionId = applicationSessionId;
+
+
+            ViewBag.ApplicationTitle = applicationSession.Application.Title;
+            ViewBag.CompanyName = organization.CompanyName;
+            return View();
+        }
+
+        public async Task<IActionResult> ReportWithScore(int? applicationSessionId, string username)
+        {
+            if (applicationSessionId == null)
+                return NotFound();
+
+            Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
+
+
+            //Ottengo il questionario di anagrafica descrittiva compilato dall'azienda
+            var organizationDetailsSurvey = await _context.OrganizationDetailsSurveySessions
+                .Include(s => s.OrganizationDetailsSurvey)
+                .ThenInclude(s => s.OrganizationDetailsSurveyQuestions)
+                .FirstOrDefaultAsync(s => s.Username == organization.Username);
+
+            //Genero la lista delle risposte date al questionario di anagrafica descrittiva
+            List<Answer> organizationDetails = new List<Answer>();
+
+            foreach (var item in organizationDetailsSurvey.SurveyResultObject)
+            {
+                var question = organizationDetailsSurvey.OrganizationDetailsSurvey.OrganizationDetailsSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                string domanda = question.Title;
+
+                string risposta = StringifyAnswer(question.Type, item.Value);
+
+                organizationDetails.Add(new Answer(item.Key, domanda, risposta));
+            }
+
+            ViewBag.OrganizationDetails = organizationDetails;
+
+
+            //Genero la lista delle risposte date ai vari questionari divise per temi
+            Dictionary<string, List<AnswerWithScores>> applicationReport = new Dictionary<string, List<AnswerWithScores>>();
+
+            //Carico la sessione appena terminata
+            var applicationSession = await _context.ApplicationSessions.Include(s => s.Application).Include(s => s.SurveyResults).ThenInclude(r => r.ApplicationSurvey).ThenInclude(s => s.Theme).Include("SurveyResults.ApplicationSurvey.ApplicationSurveyQuestions").FirstOrDefaultAsync(s => s.ID == applicationSessionId);
+
+            //Segno come completata la sessione appena terminata
+            applicationSession.Completed = true;
+            _context.Update(applicationSession);
+            await _context.SaveChangesAsync();
+
+            //Ottengo la lista dei questionari completati
+            List<ApplicationSurveyResult> surveys = applicationSession.SurveyResults;
+
+            //Carico la lista dei temi scelti dall'utente nell'esecuzione dell'applicativo
+            List<string> chosen = applicationSession.ChoosenThemes.Split(",").ToList();
+
+            //Ottengo gli oggetti Answer Per ogni tema
+            foreach (string theme in chosen)
+            {
+                //Genero la lista delle risposte date ai questionari del tema
+                List<AnswerWithScores> answers = new List<AnswerWithScores>();
+
+
+                List<ApplicationSurveyResult> results = surveys.Where(s => s.ApplicationSurvey.Theme.Description == theme).ToList();
+                foreach (ApplicationSurveyResult result in results)
+                {
+                    foreach (var item in result.SurveyResultObject)
+                    {
+
+                        var question = result.ApplicationSurvey.ApplicationSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                        string domanda = question.Title;
+
+                        string risposta = StringifyAnswer(question.Type, item.Value);
+
+                        decimal score = GetScore(question, risposta);
+                        answers.Add(new AnswerWithScores(question.ApplicationSurvey.Theme.Description,item.Key, domanda, risposta,score));
+                    }
+                }
+
+
+                applicationReport.Add(theme, answers);
+            }
+
+            //Costruisco un dizionario in cui le chiavi sono i temi e i valori il punteggio totale ottenuto in ogni tema
+            Dictionary<string, decimal> themesScore = new Dictionary<string, decimal>();
+            decimal totalScore = 0;
+            foreach (var item in applicationReport)
+            {
+                string theme = item.Key;
+
+                decimal themeScore = 0;
+                foreach (AnswerWithScores answer in item.Value)
+                {
+                    themeScore += answer.Score;
+                }
+
+                themesScore.Add(theme, themeScore);
+                totalScore += themeScore;
+            }
+
+
+            ViewBag.TotalScore = totalScore;
+            ViewBag.ThemesScore = themesScore;
+            ViewBag.ApplicationReport = applicationReport;
+
+            ViewBag.ApplicationSessionId = applicationSessionId;
+
+
+            ViewBag.ApplicationTitle = applicationSession.Application.Title;
+            ViewBag.CompanyName = organization.CompanyName;
+            return View();
+        }
+
+        private decimal GetScore(ApplicationSurveyQuestion question, string answer)
+        {
+            decimal score = 0;
+
+            switch(question.Type)
+            {
+                case "boolean":
+                    var booleanQuestion = _context.BooleanApplicationSurveyQuestions.Find(question.Id);
+                    score = answer == "Vero" ? booleanQuestion.Score : 0;
+                    break;
+                case "radiogroup":
+                    var radioQuestion = _context.ApplicationSurveyQuestions.Include(q=>q.Choices).FirstOrDefault(q=>q.Id == question.Id);
+
+                    var choosen = radioQuestion.Choices.FirstOrDefault(c => c.Description == answer);
+                    if (choosen != null)
+                        score = choosen.Score;
+                    else
+                        score = 0;
+                    break;
+                case "checkbox":
+                    var checkboxQuestion = _context.ApplicationSurveyQuestions.Include(q => q.Choices).FirstOrDefault(q => q.Id == question.Id);
+
+                    foreach(Choice choice in checkboxQuestion.Choices)
+                    {
+                        if (answer.Contains(choice.Description))
+                            score += choice.Score;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return score;
+        }
+
+        public async Task<IActionResult> CompleteWithScore(int? applicationSessionId)
+        {
+            if (applicationSessionId == null)
+                return NotFound();
+
+            //Ottengo lo username dell'azienda loggata e ne carico l'entità
+            string username = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Organization organization = await _context.Organizations.Include(c => c.OrganizationCategory).FirstOrDefaultAsync(c => c.Username == username);
+
+
+            //Ottengo il questionario di anagrafica descrittiva compilato dall'azienda
+            var organizationDetailsSurvey = await _context.OrganizationDetailsSurveySessions
+                .Include(s => s.OrganizationDetailsSurvey)
+                .ThenInclude(s => s.OrganizationDetailsSurveyQuestions)
+                .FirstOrDefaultAsync(s => s.Username == organization.Username);
+
+
+
+            //Genero la lista delle risposte date al questionario di anagrafica descrittiva
+            List<Answer> organizationDetails = new List<Answer>();
+
+            foreach (var item in organizationDetailsSurvey.SurveyResultObject)
+            {
+                var question = organizationDetailsSurvey.OrganizationDetailsSurvey.OrganizationDetailsSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                string domanda = question.Title;
+
+                string risposta = StringifyAnswer(question.Type, item.Value);
+
+                organizationDetails.Add(new Answer(item.Key, domanda, risposta));
+            }
+
+            ViewBag.OrganizationDetails = organizationDetails;
+
+
+            //Genero la lista delle risposte date ai vari questionari divise per temi
+            Dictionary<string, List<AnswerWithScores>> applicationReport = new Dictionary<string, List<AnswerWithScores>>();
+
+            //Carico la sessione appena terminata
+            var applicationSession = await _context.ApplicationSessions.Include(s => s.Application).Include(s => s.SurveyResults).ThenInclude(r => r.ApplicationSurvey).ThenInclude(s => s.Theme).Include("SurveyResults.ApplicationSurvey.ApplicationSurveyQuestions").FirstOrDefaultAsync(s => s.ID == applicationSessionId);
+
+            //Segno come completata la sessione appena terminata
+            applicationSession.Completed = true;
+            _context.Update(applicationSession);
+            await _context.SaveChangesAsync();
+
+            //Ottengo la lista dei questionari completati
+            List<ApplicationSurveyResult> surveys = applicationSession.SurveyResults;
+
+            //Carico la lista dei temi scelti dall'utente nell'esecuzione dell'applicativo
+            List<string> chosen = applicationSession.ChoosenThemes.Split(",").ToList();
+
+            //Ottengo gli oggetti Answer Per ogni tema
+            foreach (string theme in chosen)
+            {
+                //Genero la lista delle risposte date ai questionari del tema
+                List<AnswerWithScores> answers = new List<AnswerWithScores>();
+
+
+                List<ApplicationSurveyResult> results = surveys.Where(s => s.ApplicationSurvey.Theme.Description == theme).ToList();
+                foreach (ApplicationSurveyResult result in results)
+                {
+                    foreach (var item in result.SurveyResultObject)
+                    {
+
+                        var question = result.ApplicationSurvey.ApplicationSurveyQuestions.FirstOrDefault(q => q.Name == item.Key);
+
+                        string domanda = question.Title;
+
+                        string risposta = StringifyAnswer(question.Type, item.Value);
+
+                        decimal score = GetScore(question, risposta);
+                        answers.Add(new AnswerWithScores(question.ApplicationSurvey.Theme.Description, item.Key, domanda, risposta, score));
+                    }
+                }
+
+
+                applicationReport.Add(theme, answers);
+            }
+
+            //Costruisco un dizionario in cui le chiavi sono i temi e i valori il punteggio totale ottenuto in ogni tema
+            Dictionary<string, decimal> themesScore = new Dictionary<string, decimal>();
+            decimal totalScore = 0;
+            foreach (var item in applicationReport)
+            {
+                string theme = item.Key;
+
+                decimal themeScore = 0;
+                foreach (AnswerWithScores answer in item.Value)
+                {
+                    themeScore += answer.Score;
+                }
+
+                themesScore.Add(theme, themeScore);
+                totalScore += themeScore;
+            }
+
+
+            ViewBag.TotalScore = totalScore;
+            ViewBag.ThemesScore = themesScore;
+            ViewBag.ApplicationReport = applicationReport;
+
+            ViewBag.ApplicationSessionId = applicationSessionId;
+
+
+            ViewBag.ApplicationTitle = applicationSession.Application.Title;
+            ViewBag.CompanyName = organization.CompanyName;
+            return View();
+        }
     }
 }

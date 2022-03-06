@@ -31,7 +31,8 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-controller = "ApplicationSurveys" asp-action="Index" asp-route-applicationId="@item.Id">Gestisci applicazione</a> |
+                <a asp-controller="ApplicationSurveys" asp-action="Index" asp-route-applicationId="@item.Id">Gestisci applicazione</a> |
+                <a asp-controller="ApplicationSessions" asp-action="Index" asp-route-applicationId="@item.Id">Visualizza risultati</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Modifica</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Elimina</a>
             </td>

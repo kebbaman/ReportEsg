@@ -85,7 +85,7 @@
 
 
 
-<input id ="printButton" type="button" onclick="ExportToPdf()" value="Export to Pdf">
+<input id="printButton" type="button" onclick="ExportToPdf()" value="Export to Pdf">
 @section scripts
 {
     <script>
@@ -93,11 +93,11 @@
         {
             //Get the print button and put it into a variable
             var printButton = document.getElementById("printButton");
-            //Set the print button visibility to 'hidden' 
+            //Set the print button visibility to 'hidden'
             printButton.style.visibility = 'hidden';
             //Print the page content
             window.print()
-            //Set the print button to 'visible' again 
+            //Set the print button to 'visible' again
             printButton.style.visibility = 'visible';
         }
     </script>

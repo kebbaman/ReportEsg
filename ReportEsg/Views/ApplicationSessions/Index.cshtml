@@ -1,14 +1,12 @@
 ﻿@model IEnumerable<ReportEsg.Models.ApplicationSession>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sessioni completate";
 }
 
-<h1>Index</h1>
+<h1>Sessioni di ** completate dagli utenti</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -21,9 +19,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Organization)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChoosenThemes)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -34,18 +29,21 @@
                 @Html.DisplayFor(modelItem => item.DateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Application.Id)
+                @Html.DisplayFor(modelItem => item.Application.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Organization.Username)
+                @Html.DisplayFor(modelItem => item.Organization.CompanyName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ChoosenThemes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @if (item.Application.NeedsScoreCalculations)
+                {
+                    <a asp-action="ReportWithScore" asp-route-applicationSessionId="@item.ID" asp-route-username="@item.Organization.Username">Visualizza report</a>
+                }
+                else
+                {
+                    <a asp-action="Report" asp-route-applicationSessionId="@item.ID" asp-route-username="@item.Organization.Username">Visualizza report</a>
+                }
+                
             </td>
         </tr>
 }

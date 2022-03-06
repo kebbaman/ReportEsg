@@ -9,8 +9,12 @@
 <div class="container-fluid p-5" style="background-image: url('https://pixnio.com/free-images/2017/05/31/2017-05-31-10-46-40-900x600.jpg'); ">
     <h2 class="display-4 ">QUESTIONARIO DI ANAGRAFICA DESCRITTIVA</h2>
 
-    <p><span style="color: #000000; font-size: 20px;">Per poter usufruire delle altre applicazioni, è prima necessario compilare il questionario di anagrafica descrittiva.
-           <br />Una volta compilato è possibile tornare alla Homepage e selezionare l'applicazione desiderata.</span></p>
+    <p>
+        <span style="color: #000000; font-size: 20px;">
+            Per poter usufruire delle altre applicazioni, è prima necessario compilare il questionario di anagrafica descrittiva.
+            <br />Una volta compilato è possibile tornare alla Homepage e selezionare l'applicazione desiderata.
+        </span>
+    </p>
 
     @using (Html.BeginForm("Take", "OrganizationDetailsSurveys", FormMethod.Get))
     {
@@ -30,3 +34,19 @@
     }
 
 </div>
+
+@if (ViewBag.PendingSession)
+{
+<div class="container-fluid p-5" style="background-image: url('https://pixnio.com/free-images/2017/05/31/2017-05-31-10-46-40-900x600.jpg'); ">
+    <h2 class="display-4 ">SESSIONE DA TERMINARE</h2>
+
+    <p><span style="color: #000000; font-size: 20px;">Cliccando qui può tornare all'ultima sessione aperta.</span></p>
+
+    @using (Html.BeginForm("Session", "ApplicationSessions", FormMethod.Get))
+    {
+        <input type="hidden" id="id" name="id" value="@ViewBag.SessionId" />
+        <input type="submit" class="btn btn-primary" value="RIPRENDI DA DOVE HAI LASCIATO" />
+    }
+
+</div>
+}

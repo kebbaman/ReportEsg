@@ -10,7 +10,7 @@ namespace ReportEsg.Models
         public int Id { get; set; }
         public string Description { get; set; }
 
-        public int Score { get; set; }
+        public decimal Score { get; set; }
 
         public int ApplicationSurveyQuestionId { get; set; }
         public ApplicationSurveyQuestion ApplicationSurveyQuestion { get; set; }

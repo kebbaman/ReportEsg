@@ -9,6 +9,6 @@ namespace ReportEsg.Models
     public class BooleanApplicationSurveyQuestion : ApplicationSurveyQuestion
     {
         [Display(Name = "Punteggio in caso di risposta affermativa")]
-        public int Score { get; set; }
+        public decimal Score { get; set; }
     }
 }

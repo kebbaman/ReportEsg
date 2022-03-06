@@ -62,13 +62,27 @@
 </table>
 
 
+@if (Model.Application.NeedsScoreCalculations)
+{
+    <div class="container-fluid p-5">
 
-<div class="container-fluid p-5">
+        @using (Html.BeginForm("CompleteWithScore", "ApplicationSessions", FormMethod.Get))
+        {
+            <input type="hidden" id="applicationSessionId" name="applicationSessionId" value="@Model.ID" />
+            <input type="submit" class="btn btn-primary" value="COMPLETA SESSIONE" />
+        }
 
-    @using (Html.BeginForm("Complete", "ApplicationSessions", FormMethod.Get))
-    {
-        <input type="hidden" id="applicationSessionId" name="applicationSessionId" value="@Model.ID" />
-        <input type="submit" class="btn btn-primary" value="COMPLETA SESSIONE" />
-    }
+    </div>
+}
+else
+{
+    <div class="container-fluid p-5">
 
-</div>
+        @using (Html.BeginForm("Complete", "ApplicationSessions", FormMethod.Get))
+        {
+            <input type="hidden" id="applicationSessionId" name="applicationSessionId" value="@Model.ID" />
+            <input type="submit" class="btn btn-primary" value="COMPLETA SESSIONE" />
+        }
+
+    </div>
+}

@@ -4,6 +4,7 @@
 }
 
 <div id="reportArea">
+
     <h1>Report Applicazione @ViewBag.ApplicationTitle per @ViewBag.CompanyName</h1>
 
     <h2>Anagrafica descrittiva</h2>
@@ -50,6 +51,9 @@
             <thead>
                 <tr>
                     <th>
+                        Tema
+                    </th>
+                    <th>
                         Codice
                     </th>
                     <th>
@@ -57,6 +61,9 @@
                     </th>
                     <th>
                         Risposta
+                    </th>
+                    <th>
+                        Punteggio
                     </th>
                 </tr>
             </thead>
@@ -67,6 +74,9 @@
 
                     <tr>
                         <td>
+                            @answer.Tema
+                        </td>
+                        <td>
                             @answer.CodiceDomanda
                         </td>
                         <td>
@@ -75,29 +85,66 @@
                         <td>
                             @answer.Risposta
                         </td>
+                        <td>
+                            @answer.Score
+                        </td>
                     </tr>
                 }
             </tbody>
 
         </table>
     }
+
+    <h2>Punteggi</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tema
+                </th>
+                <th>
+                    Punteggio
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.ThemesScore)
+            {
+
+                <tr>
+                    <td>
+                        @item.Key
+                    </td>
+                    <td>
+                        @item.Value
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    Punteggio totale:
+                </td>
+                <td>
+                    @ViewBag.TotalScore
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-
-
-<input id ="printButton" type="button" onclick="ExportToPdf()" value="Export to Pdf">
+<input id="printButton" type="button" onclick="ExportToPdf()" value="Export to Pdf">
 @section scripts
 {
     <script>
-        function ExportToPdf()
-        {
+        function ExportToPdf() {
             //Get the print button and put it into a variable
             var printButton = document.getElementById("printButton");
-            //Set the print button visibility to 'hidden' 
+            //Set the print button visibility to 'hidden'
             printButton.style.visibility = 'hidden';
             //Print the page content
             window.print()
-            //Set the print button to 'visible' again 
+            //Set the print button to 'visible' again
             printButton.style.visibility = 'visible';
         }
     </script>

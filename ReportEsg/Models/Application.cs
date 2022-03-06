@@ -15,6 +15,8 @@ namespace ReportEsg.Models
         [Display(Name = "Descrizione")]
         public string Description { get; set; }
 
+        public bool NeedsScoreCalculations { get; set; }
+
         public OrganizationCategoryPerApplication OrganizationCategoryPerApplication;
 
         public List<Theme> Themes { get; set; }
