@@ -22,9 +22,15 @@ namespace ReportEsg.Models
         {
             get
             {
-                List<string> list = new List<string>();
-                Choices.ForEach(x => list.Add(x.Description));
-                return list;
+                if (Choices is null)
+                    return null;
+                else
+                {
+                    List<string> list = new List<string>();
+                    Choices.ForEach(x => list.Add(x.Description));
+                    return list;
+                }
+                
             }
         }
 

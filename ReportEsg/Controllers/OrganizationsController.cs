@@ -50,7 +50,7 @@ namespace ReportEsg.Controllers
         // GET: Organizations/Create
         public IActionResult Create()
         {
-            ViewData["OrganizationCategoryId"] = new SelectList(_context.OrganizationCategories, "Id", "Id");
+            ViewData["OrganizationCategoryId"] = new SelectList(_context.OrganizationCategories, "Id", "Description");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace ReportEsg.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CompanyName,PhoneNumber,Indirizzo,Cap,Località,Provincia,PartitaIva,CompanyCategoryId,Username,Email")] CompanyViewModel newCompany)
+        public async Task<IActionResult> Create([Bind("CompanyName,PhoneNumber,Indirizzo,Cap,Località,Provincia,PartitaIva,OrganizationCategoryId,Username,Email")] CompanyViewModel newCompany)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace ReportEsg.Controllers
                 _context.Add(company);
                 await _context.SaveChangesAsync();
                 SmtpHelper.SendEmail(company.Email, company.CompanyName, "Iscrizione ad Esg reporting assistant", "Username = indirizzo email, Password =" + pwd);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
 
             }
             ViewData["OrganizationCategoryId"] = new SelectList(_context.OrganizationCategories, "Id", "Description");
@@ -105,7 +105,7 @@ namespace ReportEsg.Controllers
                 return NotFound();
             }
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Description", organization.RoleId);
-            ViewData["OrganizationCategoryId"] = new SelectList(_context.OrganizationCategories, "Id", "Id", organization.OrganizationCategoryId);
+            ViewData["OrganizationCategoryId"] = new SelectList(_context.OrganizationCategories, "Id", "Description");
             return View(organization);
         }
 
@@ -142,7 +142,7 @@ namespace ReportEsg.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Description", organization.RoleId);
-            ViewData["OrganizationCategoryId"] = new SelectList(_context.OrganizationCategories, "Id", "Id", organization.OrganizationCategoryId);
+            ViewData["OrganizationCategoryId"] = new SelectList(_context.OrganizationCategories, "Id", "Description");
             return View(organization);
         }
 
