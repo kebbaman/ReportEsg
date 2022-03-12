@@ -9,9 +9,11 @@ namespace ReportEsg.Models
     public class ConsultantUser : User
     {
         [StringLength(100)]
+        [Display(Name = "Nome")]
         public string FirstName { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Cognome")]
         public string LastName { get; set; }
     }
 
