@@ -14,7 +14,8 @@ namespace ReportEsg.Models
         public int ApplicationSurveyId { get; set; }
         public ApplicationSurvey ApplicationSurvey { get; set; }
 
-        public virtual List<Choice> Choices { get; set; }
+        //public virtual List<Choice> Choices { get; set; }
+        public List<Choice> Choices { get; set; }
 
         [NotMapped]
         [JsonProperty(PropertyName = "choices")]

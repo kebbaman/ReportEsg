@@ -21,6 +21,7 @@ namespace ReportEsg.Models
 
         [ForeignKey("Organization")]
         public string Username { get; set; }
+        [Display(Name = "Organizzazione")]
         public Organization Organization { get; set; }
 
         [NotMapped]

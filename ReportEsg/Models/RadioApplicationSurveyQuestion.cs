@@ -9,8 +9,8 @@ namespace ReportEsg.Models
 {
     public class RadioApplicationSurveyQuestion : ApplicationSurveyQuestion
     {
-        [JsonProperty(PropertyName = "choices")]
-        public override List<Choice> Choices { get; set; }
+        //[JsonProperty(PropertyName = "choices")]
+        //public override List<Choice> Choices { get; set; }
 
     }
 }
