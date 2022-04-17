@@ -9,14 +9,16 @@ namespace ReportEsg.Models
 {
     public class SmtpHelper
     {
+        //Inserire delle credenziali per l'utilizzo dell'SMTP
         public static void SendEmail(string receiverAddress, string receiverName, string subject, string body, List<string> ccAddresses, List<Attachment> attachments)
         {
-            string senderAddress = "kmanneh@studenti.uninsubria.it";
+            /*
+            string senderAddress = "";
             string senderName = "Esg reporting assistant";
             //CREDENZIALI ED IMPOSTAZIONI SMTP
             SmtpClient client = new SmtpClient("smtp.office365.com", 587)
             {
-                Credentials = new NetworkCredential("kmanneh@studenti.uninsubria.it", "Vincotutto!2018"),
+                Credentials = new NetworkCredential("", ""),
                 EnableSsl = true,
                 //EnableSsl = false,
                 Timeout = 100000
@@ -40,16 +42,18 @@ namespace ReportEsg.Models
             }
 
             client.Send(msg);  //invio del messaggio costruito
+            */
         }
 
         public static void SendEmail(string receiverAddress, string receiverName, string subject, string body)
         {
-            string senderAddress = "kmanneh@studenti.uninsubria.it";
+            /*
+            string senderAddress = "";
             string senderName = "Esg reporting assistant";
             //CREDENZIALI ED IMPOSTAZIONI SMTP
             SmtpClient client = new SmtpClient("smtp.office365.com", 587)
             {
-                Credentials = new NetworkCredential("kmanneh@studenti.uninsubria.it", "Vincotutto!2018"),
+                Credentials = new NetworkCredential("", ""),
                 EnableSsl = true,
                 //EnableSsl = false,
                 Timeout = 100000
@@ -64,16 +68,18 @@ namespace ReportEsg.Models
             msg.Body = body;  //corpo
 
             client.Send(msg);  //invio del messaggio costruito
+            */
         }
 
         public static void SendEmail(string receiverAddress, string receiverName, string subject, string body, bool isHtml)
         {
-            string senderAddress = "kmanneh@studenti.uninsubria.it";
+            /*
+            string senderAddress = "";
             string senderName = "Esg reporting assistant";
             //CREDENZIALI ED IMPOSTAZIONI SMTP
             SmtpClient client = new SmtpClient("smtp.office365.com", 587)
             {
-                Credentials = new NetworkCredential("kmanneh@studenti.uninsubria.it", "Vincotutto!2018"),
+                Credentials = new NetworkCredential("", ""),
                 EnableSsl = true,
                 //EnableSsl = false,
                 Timeout = 100000
@@ -95,6 +101,7 @@ namespace ReportEsg.Models
 
 
             client.Send(msg);  //invio del messaggio costruito
+            */
         }
     }
 }
